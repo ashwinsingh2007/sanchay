@@ -1,0 +1,16 @@
+appId: app.sanchay.desktop
+productName: Sanchay
+directories:
+  buildResources: resources
+files:
+  - out/**
+  - package.json
+asarUnpack:
+  - '**/*.node'
+mac:
+  category: public.app-category.finance
+  target: dmg
+  identity: null
+  extendInfo:
+    NSMicrophoneUsageDescription: Lets you talk to your AI CFO. Audio is transcribed on this Mac.
+npmRebuild: true

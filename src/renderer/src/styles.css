@@ -1,0 +1,1607 @@
+@import 'tailwindcss';
+
+@theme static {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
+  /* Fraunces (OFL, bundled) for titles only; amounts stay in SF Pro for ₹ and tabular figures. */
+  --font-display: 'Fraunces Variable', ui-serif, 'New York', Georgia, serif;
+
+  /*
+   * Sanchay design system — "paper and stone".
+   * Warm-tinted neutrals (never pure white/black), one brand accent (Jamun), and colour that
+   * carries meaning by temperature. Every text colour passes WCAG AA on surface and sunken.
+   * Dark values live under html[data-theme='dark'].
+   */
+  --color-canvas: #f5f3ef;
+  /* The sidebar is its own surface, a step off the canvas. */
+  --color-sidebar: #ebe7df;
+  --color-surface: #fdfcfa;
+  --color-sunken: #eeebe5;
+  --color-raised: #ffffff;
+  --color-line: #e5e1d9;
+  --color-line-strong: #d2ccc1;
+  --color-ink: #1e1a17;
+  --color-ink-2: #56504a;
+  --color-ink-3: #736b63;
+
+  /* Brand: Jamun (mulberry). Buttons, focus, selected nav, the AI CFO. Never on amounts. */
+  --color-accent: #7a3b6c;
+  --color-accent-deep: #652f59;
+  --color-accent-soft: #f3e8ef;
+  --color-accent-ink: #7a3b6c;
+  /* Text on a solid colour block. */
+  --color-on-color: #ffffff;
+
+  /*
+   * Temperature:
+   *   cold — investments, net worth      cool — income, savings, gains
+   *   warm — spending                    hot  — overspending, losses, alerts
+   */
+  --color-cold: #3d4fb0;
+  --color-cold-soft: #eceefa;
+  --color-cool: #0b735e;
+  --color-cool-soft: #e4f3ee;
+  --color-warm: #8f5b00;
+  --color-warm-soft: #f9efdc;
+  --color-hot: #a21f2e;
+  --color-hot-soft: #fbe7ea;
+  /* Brighter versions for tinted fills (heatmaps, meters) — never for text. */
+  --color-cool-tint: #2fae8c;
+  --color-warm-tint: #eba32f;
+  --color-hot-tint: #d9465a;
+
+  --color-positive: var(--color-cool);
+  --color-positive-soft: var(--color-cool-soft);
+  --color-expense: var(--color-warm);
+  --color-expense-soft: var(--color-warm-soft);
+  --color-attention: var(--color-warm);
+  --color-attention-soft: var(--color-warm-soft);
+  --color-negative: var(--color-hot);
+  --color-negative-soft: var(--color-hot-soft);
+
+  /*
+   * Components use white/black utilities as "foreground"/"background" tints (from the original
+   * black theme), so map them to the active theme's ink and surface.
+   */
+  --color-white: var(--color-ink);
+  --color-black: var(--color-surface);
+
+  /* Soft, never zero: tags 4 · inputs/buttons 6–8 · cards 14 · modals 20. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 14px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+
+  --shadow-sm: 0 1px 2px rgb(30 26 23 / 0.06);
+  --shadow-md: 0 4px 12px -2px rgb(30 26 23 / 0.08), 0 1px 3px rgb(30 26 23 / 0.06);
+  --shadow-lg: 0 16px 40px -8px rgb(30 26 23 / 0.14);
+
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #141211;
+  --color-sidebar: #0e0d0c;
+  --color-surface: #1c1a18;
+  --color-sunken: #100f0e;
+  --color-raised: #262321;
+  --color-line: #2f2b28;
+  --color-line-strong: #423c37;
+  --color-ink: #f1ece6;
+  --color-ink-2: #bcb3a9;
+  --color-ink-3: #968d83;
+  --color-accent: #d88cc6;
+  --color-accent-deep: #e6a9d7;
+  --color-accent-soft: #38222f;
+  --color-accent-ink: #d88cc6;
+  --color-on-color: #1c1a18;
+  --color-cold: #97a6f4;
+  --color-cold-soft: #1f2238;
+  --color-cool: #52c7a5;
+  --color-cool-soft: #15291f;
+  --color-warm: #e8b04e;
+  --color-warm-soft: #2e2314;
+  --color-hot: #f27382;
+  --color-hot-soft: #351a20;
+  --color-cool-tint: #52c7a5;
+  --color-warm-tint: #e8b04e;
+  --color-hot-tint: #f27382;
+  --shadow-sm: inset 0 1px 0 rgb(255 255 255 / 0.04);
+  --shadow-md: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 8px 24px rgb(0 0 0 / 0.45);
+  --shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 16px 40px rgb(0 0 0 / 0.55);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    cursor: default;
+  }
+  input,
+  textarea,
+  select,
+  [data-selectable] {
+    user-select: text;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+  /* Fraunces with its SOFT axis up: rounded, friendly serif headings. */
+  .font-\[family-name\:var\(--font-display\)\] {
+    font-variation-settings:
+      'SOFT' 100,
+      'WONK' 0;
+    letter-spacing: -0.015em;
+  }
+}
+
+.bg-app {
+  background: var(--color-canvas);
+}
+.chrome {
+  background: var(--color-canvas);
+}
+aside.chrome {
+  background: var(--color-sidebar);
+  box-shadow: inset -1px 0 0 var(--color-line);
+}
+header.chrome {
+  background: color-mix(in oklab, var(--color-canvas) 88%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  box-shadow: inset 0 -1px 0 var(--color-line);
+}
+/* Cards: surface, hairline border, barely-there lift. */
+.material {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-sm);
+}
+/* Hero cards (net worth): a touch more depth. */
+.gloss {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-md);
+}
+/* Primary action in Jamun. */
+.gloss-btn {
+  background: var(--color-accent);
+  color: var(--color-on-color);
+  box-shadow: var(--shadow-sm);
+  transition:
+    background-color 120ms var(--ease-out-soft),
+    transform 120ms var(--ease-out-soft);
+}
+.gloss-btn:hover:not(:disabled) {
+  background: var(--color-accent-deep);
+}
+.gloss-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+/* Hero numbers only: a quiet cold-to-Jamun gradient. */
+.hero-number {
+  background: linear-gradient(100deg, var(--color-cold) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* ---------- Styles (html[data-style]) — same meanings, different personality ---------- */
+
+/* Terminal: TradingView-like. Neutral greys, blue accent, green/red P&L, tight corners, flat. */
+html[data-style='terminal'] {
+  --font-display: var(--font-sans);
+  --color-canvas: #f0f3fa;
+  --color-sidebar: #e3e8f2;
+  --color-surface: #ffffff;
+  --color-sunken: #f5f7fb;
+  --color-raised: #ffffff;
+  --color-line: #e0e3eb;
+  --color-line-strong: #c9cdd8;
+  --color-ink: #131722;
+  --color-ink-2: #4a4f5c;
+  --color-ink-3: #6a6d78;
+  --color-accent: #2962ff;
+  --color-accent-deep: #1e4fd9;
+  --color-accent-soft: #e3ebff;
+  --color-accent-ink: #1e4fd9;
+  --color-on-color: #ffffff;
+  --color-cold: #5b4fd6;
+  --color-cold-soft: #eeecfc;
+  --color-cool: #00796b;
+  --color-cool-soft: #e0f4f0;
+  --color-cool-tint: #089981;
+  --color-warm: #a35f00;
+  --color-warm-soft: #fff1dc;
+  --color-warm-tint: #f7a600;
+  --color-hot: #cc1f2f;
+  --color-hot-soft: #fde8ea;
+  --color-hot-tint: #f23645;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 8px;
+  --radius-3xl: 10px;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 8px 24px rgb(19 23 34 / 0.12);
+}
+html[data-style='terminal'][data-theme='dark'] {
+  --color-canvas: #0f1115;
+  --color-sidebar: #0a0c10;
+  --color-surface: #161a25;
+  --color-sunken: #12151d;
+  --color-raised: #1e222d;
+  --color-line: #2a2e39;
+  --color-line-strong: #363a45;
+  --color-ink: #d1d4dc;
+  --color-ink-2: #a3a6af;
+  --color-ink-3: #787b86;
+  --color-accent: #2962ff;
+  --color-accent-deep: #4b7bff;
+  --color-accent-soft: #142045;
+  --color-accent-ink: #6d93ff;
+  --color-on-color: #ffffff;
+  --color-cold: #9d94ff;
+  --color-cold-soft: #221f45;
+  --color-cool: #22ab94;
+  --color-cool-soft: #0f2a26;
+  --color-cool-tint: #089981;
+  --color-warm: #f7a600;
+  --color-warm-soft: #2e2410;
+  --color-warm-tint: #f7a600;
+  --color-hot: #f7525f;
+  --color-hot-soft: #3a1418;
+  --color-hot-tint: #f23645;
+}
+html[data-style='terminal'] .hero-number {
+  background: none;
+  color: var(--color-ink);
+}
+html[data-style='terminal'] .font-\[family-name\:var\(--font-display\)\] {
+  font-variation-settings: normal;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Studio: the middle ground. Neutral zinc greys, teal accent, medium corners, soft lift. */
+html[data-style='studio'] {
+  --font-display: var(--font-sans);
+  --color-canvas: #f4f4f5;
+  --color-sidebar: #e9e9ec;
+  --color-surface: #ffffff;
+  --color-sunken: #f4f4f5;
+  --color-raised: #ffffff;
+  --color-line: #e4e4e7;
+  --color-line-strong: #d4d4d8;
+  --color-ink: #18181b;
+  --color-ink-2: #52525b;
+  --color-ink-3: #71717a;
+  --color-accent: #0f766e;
+  --color-accent-deep: #115e59;
+  --color-accent-soft: #e6f4f2;
+  --color-accent-ink: #0f766e;
+  --color-on-color: #ffffff;
+  --color-cold: #4f46e5;
+  --color-cold-soft: #eef0ff;
+  --color-cool: #15803d;
+  --color-cool-soft: #e8f6ec;
+  --color-cool-tint: #22c55e;
+  --color-warm: #b45309;
+  --color-warm-soft: #fdf2e3;
+  --color-warm-tint: #f59e0b;
+  --color-hot: #c81e1e;
+  --color-hot-soft: #fdebeb;
+  --color-hot-tint: #ef4444;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
+  --radius-2xl: 14px;
+  --radius-3xl: 16px;
+  --shadow-sm: 0 1px 2px rgb(24 24 27 / 0.05);
+  --shadow-md: 0 1px 2px rgb(24 24 27 / 0.05), 0 6px 16px -4px rgb(24 24 27 / 0.08);
+}
+html[data-style='studio'][data-theme='dark'] {
+  --color-canvas: #09090b;
+  --color-sidebar: #050506;
+  --color-surface: #131316;
+  --color-sunken: #0c0c0e;
+  --color-raised: #1c1c20;
+  --color-line: #27272a;
+  --color-line-strong: #3f3f46;
+  --color-ink: #f4f4f5;
+  --color-ink-2: #b4b4bb;
+  --color-ink-3: #8b8b93;
+  --color-accent: #2dd4bf;
+  --color-accent-deep: #5eead4;
+  --color-accent-soft: #0f2a28;
+  --color-accent-ink: #2dd4bf;
+  --color-on-color: #09090b;
+  --color-cold: #a5b4fc;
+  --color-cold-soft: #1e1f3d;
+  --color-cool: #4ade80;
+  --color-cool-soft: #102617;
+  --color-warm: #fbbf24;
+  --color-warm-soft: #2b2110;
+  --color-hot: #f87171;
+  --color-hot-soft: #331515;
+}
+html[data-style='studio'] .hero-number {
+  background: none;
+  color: var(--color-ink);
+}
+html[data-style='studio'] .font-\[family-name\:var\(--font-display\)\] {
+  font-variation-settings: normal;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+/* Ocean: cool blue-slate neutrals, sky-blue accent. */
+html[data-style='ocean'] {
+  --font-display: var(--font-sans);
+  --color-canvas: #f4f7fa;
+  --color-sidebar: #e4ebf2;
+  --color-surface: #ffffff;
+  --color-sunken: #eef2f6;
+  --color-raised: #ffffff;
+  --color-line: #dde4ec;
+  --color-line-strong: #c8d2de;
+  --color-ink: #12202f;
+  --color-ink-2: #46586b;
+  --color-ink-3: #66788b;
+  --color-accent: #0b6aa2;
+  --color-accent-deep: #08557f;
+  --color-accent-soft: #e2f0f8;
+  --color-accent-ink: #0b6aa2;
+  --color-on-color: #ffffff;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+}
+html[data-style='ocean'][data-theme='dark'] {
+  --color-canvas: #0d1724;
+  --color-sidebar: #08111b;
+  --color-surface: #13202f;
+  --color-sunken: #0a1420;
+  --color-raised: #1a293a;
+  --color-line: #1f3044;
+  --color-line-strong: #2c4058;
+  --color-ink: #e6eef6;
+  --color-ink-2: #a8b9ca;
+  --color-ink-3: #7d90a4;
+  --color-accent: #4cb3ea;
+  --color-accent-deep: #7cc8f0;
+  --color-accent-soft: #10304a;
+  --color-accent-ink: #6cc0ee;
+  --color-on-color: #0d1724;
+}
+html[data-style='ocean'] .hero-number {
+  background: linear-gradient(100deg, var(--color-cold) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Graphite: pure neutral greys, violet accent. Quiet and tool-like. */
+html[data-style='graphite'] {
+  --font-display: var(--font-sans);
+  --color-canvas: #f6f6f6;
+  --color-sidebar: #ececec;
+  --color-surface: #ffffff;
+  --color-sunken: #f0f0f0;
+  --color-raised: #ffffff;
+  --color-line: #e3e3e3;
+  --color-line-strong: #cfcfcf;
+  --color-ink: #171717;
+  --color-ink-2: #4f4f4f;
+  --color-ink-3: #6f6f6f;
+  --color-accent: #6e56cf;
+  --color-accent-deep: #5a45b0;
+  --color-accent-soft: #efebfb;
+  --color-accent-ink: #6e56cf;
+  --color-on-color: #ffffff;
+  --radius-xl: 10px;
+}
+html[data-style='graphite'][data-theme='dark'] {
+  --color-canvas: #111111;
+  --color-sidebar: #0a0a0a;
+  --color-surface: #181818;
+  --color-sunken: #0d0d0d;
+  --color-raised: #212121;
+  --color-line: #262626;
+  --color-line-strong: #383838;
+  --color-ink: #ededed;
+  --color-ink-2: #b4b4b4;
+  --color-ink-3: #8c8c8c;
+  --color-accent: #9e8cfc;
+  --color-accent-deep: #b9acfd;
+  --color-accent-soft: #2a2347;
+  --color-accent-ink: #b1a3fd;
+  --color-on-color: #111111;
+}
+html[data-style='graphite'] .hero-number {
+  background: none;
+  color: var(--color-ink);
+}
+
+/*
+ * Neo: inspired by CRED's NeoPOP — black sidebar, neon-lime action colour, square corners and
+ * hard 3D "plunk" edges instead of soft shadows. (Hues from NeoPOP's open palette, Apache-2.0.)
+ */
+html[data-style='neo'] {
+  --font-display: var(--font-sans);
+  --color-canvas: #f3f3ee;
+  --color-sidebar: #0d0d0d;
+  --color-surface: #ffffff;
+  --color-sunken: #ebebe5;
+  --color-raised: #ffffff;
+  --color-line: #d9d9d2;
+  --color-line-strong: #0d0d0d;
+  --color-ink: #0d0d0d;
+  --color-ink-2: #3d3d3d;
+  --color-ink-3: #6b6b6b;
+  --color-accent: #e5fe40;
+  --color-accent-deep: #a0b22d;
+  --color-accent-soft: #f7ffc6;
+  --color-accent-ink: #4a5410;
+  --color-on-color: #0d0d0d;
+  --color-cold: #144cc7;
+  --color-cool: #0a7d4a;
+  --color-warm: #a8541c;
+  --color-hot: #c23a26;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+}
+html[data-style='neo'][data-theme='dark'] {
+  --color-canvas: #0d0d0d;
+  --color-sidebar: #000000;
+  --color-surface: #161616;
+  --color-sunken: #121212;
+  --color-raised: #1f1f1f;
+  --color-line: #2b2b2b;
+  --color-line-strong: #8a8a8a;
+  --color-ink: #ffffff;
+  --color-ink-2: #c4c4c4;
+  --color-ink-3: #8a8a8a;
+  --color-accent-soft: #2a2f0c;
+  --color-accent-ink: #e5fe40;
+  --color-cold: #6f95f2;
+  --color-cool: #3bffad;
+  --color-warm: #ffab7c;
+  --color-hot: #f47564;
+}
+/* The black sidebar keeps light text in both themes. */
+html[data-style='neo'] aside.chrome {
+  --color-ink: #ffffff;
+  --color-ink-2: #c4c4c4;
+  --color-ink-3: #8a8a8a;
+  --color-line: #2b2b2b;
+  --color-line-strong: #3d3d3d;
+  --color-surface: #161616;
+  --color-sunken: #1f1f1f;
+  --color-accent-soft: #2a2f0c;
+  --color-accent-ink: #e5fe40;
+  --color-white: #ffffff;
+}
+html[data-style='neo'] .material {
+  border: 1.5px solid var(--color-line-strong);
+  box-shadow: 4px 4px 0 0 var(--color-line-strong);
+}
+html[data-style='neo'] .gloss {
+  border: 1.5px solid var(--color-line-strong);
+  box-shadow: 6px 6px 0 0 var(--color-accent-deep);
+}
+html[data-style='neo'] .gloss-btn {
+  box-shadow: 3px 3px 0 0 var(--color-ink);
+  font-weight: 600;
+}
+html[data-style='neo'][data-theme='dark'] .gloss-btn {
+  box-shadow: 3px 3px 0 0 var(--color-accent-deep);
+}
+html[data-style='neo'] .gloss-btn:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+html[data-style='neo'] .hero-number {
+  background: none;
+  color: var(--color-ink);
+}
+
+/* ---------- Generated: palette themes and design languages (one block per theme; keep the token list identical across themes) ---------- */
+
+html[data-style='catppuccin'] {
+  --color-canvas: #eff1f5;
+  --color-sidebar: #e6e9ef;
+  --color-surface: #ffffff;
+  --color-sunken: #e6e9ef;
+  --color-raised: #ffffff;
+  --color-line: #dce0e8;
+  --color-line-strong: #ccd0da;
+  --color-ink: #4c4f69;
+  --color-ink-2: #5c5f77;
+  --color-ink-3: #6c6f85;
+  --color-accent: #8839ef;
+  --color-accent-deep: color-mix(in oklab, #8839ef 82%, black);
+  --color-accent-soft: color-mix(in oklab, #8839ef 14%, #ffffff);
+  --color-accent-ink: color-mix(in oklab, #8839ef 82%, #4c4f69);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #1e66f5 82%, #4c4f69);
+  --color-cold-soft: color-mix(in oklab, #1e66f5 14%, #ffffff);
+  --color-cold-tint: #1e66f5;
+  --color-cool: color-mix(in oklab, #40a02b 82%, #4c4f69);
+  --color-cool-soft: color-mix(in oklab, #40a02b 14%, #ffffff);
+  --color-cool-tint: #40a02b;
+  --color-warm: color-mix(in oklab, #df8e1d 82%, #4c4f69);
+  --color-warm-soft: color-mix(in oklab, #df8e1d 14%, #ffffff);
+  --color-warm-tint: #df8e1d;
+  --color-hot: color-mix(in oklab, #d20f39 82%, #4c4f69);
+  --color-hot-soft: color-mix(in oklab, #d20f39 14%, #ffffff);
+  --color-hot-tint: #d20f39;
+}
+
+html[data-style='catppuccin'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #1e1e2e;
+  --color-sidebar: #181825;
+  --color-surface: #262637;
+  --color-sunken: #181825;
+  --color-raised: #313244;
+  --color-line: #313244;
+  --color-line-strong: #45475a;
+  --color-ink: #cdd6f4;
+  --color-ink-2: #bac2de;
+  --color-ink-3: #9399b2;
+  --color-accent: #cba6f7;
+  --color-accent-deep: color-mix(in oklab, #cba6f7 82%, white);
+  --color-accent-soft: color-mix(in oklab, #cba6f7 14%, #262637);
+  --color-accent-ink: #cba6f7;
+  --color-on-color: #1e1e2e;
+  --color-cold: #89b4fa;
+  --color-cold-soft: color-mix(in oklab, #89b4fa 14%, #262637);
+  --color-cold-tint: #89b4fa;
+  --color-cool: #a6e3a1;
+  --color-cool-soft: color-mix(in oklab, #a6e3a1 14%, #262637);
+  --color-cool-tint: #a6e3a1;
+  --color-warm: #f9e2af;
+  --color-warm-soft: color-mix(in oklab, #f9e2af 14%, #262637);
+  --color-warm-tint: #f9e2af;
+  --color-hot: #f38ba8;
+  --color-hot-soft: color-mix(in oklab, #f38ba8 14%, #262637);
+  --color-hot-tint: #f38ba8;
+}
+
+html[data-style='nord'] {
+  --color-canvas: #eceff4;
+  --color-sidebar: #e5e9f0;
+  --color-surface: #f8f9fb;
+  --color-sunken: #e5e9f0;
+  --color-raised: #ffffff;
+  --color-line: #d8dee9;
+  --color-line-strong: #c2cad8;
+  --color-ink: #2e3440;
+  --color-ink-2: #434c5e;
+  --color-ink-3: #5f6b80;
+  --color-accent: #5e81ac;
+  --color-accent-deep: color-mix(in oklab, #5e81ac 82%, black);
+  --color-accent-soft: color-mix(in oklab, #5e81ac 14%, #f8f9fb);
+  --color-accent-ink: color-mix(in oklab, #5e81ac 82%, #2e3440);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #5e81ac 82%, #2e3440);
+  --color-cold-soft: color-mix(in oklab, #5e81ac 14%, #f8f9fb);
+  --color-cold-tint: #5e81ac;
+  --color-cool: color-mix(in oklab, #6f8f55 82%, #2e3440);
+  --color-cool-soft: color-mix(in oklab, #6f8f55 14%, #f8f9fb);
+  --color-cool-tint: #6f8f55;
+  --color-warm: color-mix(in oklab, #b6862c 82%, #2e3440);
+  --color-warm-soft: color-mix(in oklab, #b6862c 14%, #f8f9fb);
+  --color-warm-tint: #b6862c;
+  --color-hot: color-mix(in oklab, #bf616a 82%, #2e3440);
+  --color-hot-soft: color-mix(in oklab, #bf616a 14%, #f8f9fb);
+  --color-hot-tint: #bf616a;
+}
+
+html[data-style='nord'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #2e3440;
+  --color-sidebar: #272c36;
+  --color-surface: #3b4252;
+  --color-sunken: #2a2f3a;
+  --color-raised: #434c5e;
+  --color-line: #434c5e;
+  --color-line-strong: #4c566a;
+  --color-ink: #eceff4;
+  --color-ink-2: #d8dee9;
+  --color-ink-3: #9aa5b8;
+  --color-accent: #88c0d0;
+  --color-accent-deep: color-mix(in oklab, #88c0d0 82%, white);
+  --color-accent-soft: color-mix(in oklab, #88c0d0 14%, #3b4252);
+  --color-accent-ink: #88c0d0;
+  --color-on-color: #2e3440;
+  --color-cold: #81a1c1;
+  --color-cold-soft: color-mix(in oklab, #81a1c1 14%, #3b4252);
+  --color-cold-tint: #81a1c1;
+  --color-cool: #a3be8c;
+  --color-cool-soft: color-mix(in oklab, #a3be8c 14%, #3b4252);
+  --color-cool-tint: #a3be8c;
+  --color-warm: #ebcb8b;
+  --color-warm-soft: color-mix(in oklab, #ebcb8b 14%, #3b4252);
+  --color-warm-tint: #ebcb8b;
+  --color-hot: #bf616a;
+  --color-hot-soft: color-mix(in oklab, #bf616a 14%, #3b4252);
+  --color-hot-tint: #bf616a;
+}
+
+html[data-style='dracula'] {
+  --color-canvas: #fffbeb;
+  --color-sidebar: #f5efd8;
+  --color-surface: #fffdf5;
+  --color-sunken: #f6f1dc;
+  --color-raised: #ffffff;
+  --color-line: #e8e2c8;
+  --color-line-strong: #d5ceb0;
+  --color-ink: #1f1f1f;
+  --color-ink-2: #4a4630;
+  --color-ink-3: #6c664b;
+  --color-accent: #644ac9;
+  --color-accent-deep: color-mix(in oklab, #644ac9 82%, black);
+  --color-accent-soft: color-mix(in oklab, #644ac9 14%, #fffdf5);
+  --color-accent-ink: color-mix(in oklab, #644ac9 82%, #1f1f1f);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #036a96 82%, #1f1f1f);
+  --color-cold-soft: color-mix(in oklab, #036a96 14%, #fffdf5);
+  --color-cold-tint: #036a96;
+  --color-cool: color-mix(in oklab, #14710a 82%, #1f1f1f);
+  --color-cool-soft: color-mix(in oklab, #14710a 14%, #fffdf5);
+  --color-cool-tint: #14710a;
+  --color-warm: color-mix(in oklab, #a34d14 82%, #1f1f1f);
+  --color-warm-soft: color-mix(in oklab, #a34d14 14%, #fffdf5);
+  --color-warm-tint: #a34d14;
+  --color-hot: color-mix(in oklab, #cb3a2a 82%, #1f1f1f);
+  --color-hot-soft: color-mix(in oklab, #cb3a2a 14%, #fffdf5);
+  --color-hot-tint: #cb3a2a;
+}
+
+html[data-style='dracula'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #282a36;
+  --color-sidebar: #21222c;
+  --color-surface: #303241;
+  --color-sunken: #222431;
+  --color-raised: #3a3c4e;
+  --color-line: #3b3e52;
+  --color-line-strong: #44475a;
+  --color-ink: #f8f8f2;
+  --color-ink-2: #cfcfe0;
+  --color-ink-3: #8f98c8;
+  --color-accent: #bd93f9;
+  --color-accent-deep: color-mix(in oklab, #bd93f9 82%, white);
+  --color-accent-soft: color-mix(in oklab, #bd93f9 14%, #303241);
+  --color-accent-ink: #bd93f9;
+  --color-on-color: #282a36;
+  --color-cold: #8be9fd;
+  --color-cold-soft: color-mix(in oklab, #8be9fd 14%, #303241);
+  --color-cold-tint: #8be9fd;
+  --color-cool: #50fa7b;
+  --color-cool-soft: color-mix(in oklab, #50fa7b 14%, #303241);
+  --color-cool-tint: #50fa7b;
+  --color-warm: #ffb86c;
+  --color-warm-soft: color-mix(in oklab, #ffb86c 14%, #303241);
+  --color-warm-tint: #ffb86c;
+  --color-hot: #ff5555;
+  --color-hot-soft: color-mix(in oklab, #ff5555 14%, #303241);
+  --color-hot-tint: #ff5555;
+}
+
+html[data-style='rosepine'] {
+  --color-canvas: #faf4ed;
+  --color-sidebar: #f2e9e1;
+  --color-surface: #fffaf3;
+  --color-sunken: #f4ede8;
+  --color-raised: #ffffff;
+  --color-line: #dfdad9;
+  --color-line-strong: #cecacd;
+  --color-ink: #575279;
+  --color-ink-2: #6e6a86;
+  --color-ink-3: #797593;
+  --color-accent: #d7827e;
+  --color-accent-deep: color-mix(in oklab, #d7827e 82%, black);
+  --color-accent-soft: color-mix(in oklab, #d7827e 14%, #fffaf3);
+  --color-accent-ink: color-mix(in oklab, #d7827e 82%, #575279);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #286983 82%, #575279);
+  --color-cold-soft: color-mix(in oklab, #286983 14%, #fffaf3);
+  --color-cold-tint: #286983;
+  --color-cool: color-mix(in oklab, #3f7f6a 82%, #575279);
+  --color-cool-soft: color-mix(in oklab, #3f7f6a 14%, #fffaf3);
+  --color-cool-tint: #3f7f6a;
+  --color-warm: color-mix(in oklab, #ea9d34 82%, #575279);
+  --color-warm-soft: color-mix(in oklab, #ea9d34 14%, #fffaf3);
+  --color-warm-tint: #ea9d34;
+  --color-hot: color-mix(in oklab, #b4637a 82%, #575279);
+  --color-hot-soft: color-mix(in oklab, #b4637a 14%, #fffaf3);
+  --color-hot-tint: #b4637a;
+}
+
+html[data-style='rosepine'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #232136;
+  --color-sidebar: #1f1d30;
+  --color-surface: #2a273f;
+  --color-sunken: #201e32;
+  --color-raised: #393552;
+  --color-line: #393552;
+  --color-line-strong: #44415a;
+  --color-ink: #e0def4;
+  --color-ink-2: #b8b5d0;
+  --color-ink-3: #908caa;
+  --color-accent: #ea9a97;
+  --color-accent-deep: color-mix(in oklab, #ea9a97 82%, white);
+  --color-accent-soft: color-mix(in oklab, #ea9a97 14%, #2a273f);
+  --color-accent-ink: #ea9a97;
+  --color-on-color: #232136;
+  --color-cold: #7fb2d6;
+  --color-cold-soft: color-mix(in oklab, #7fb2d6 14%, #2a273f);
+  --color-cold-tint: #7fb2d6;
+  --color-cool: #9ccfd8;
+  --color-cool-soft: color-mix(in oklab, #9ccfd8 14%, #2a273f);
+  --color-cool-tint: #9ccfd8;
+  --color-warm: #f6c177;
+  --color-warm-soft: color-mix(in oklab, #f6c177 14%, #2a273f);
+  --color-warm-tint: #f6c177;
+  --color-hot: #eb6f92;
+  --color-hot-soft: color-mix(in oklab, #eb6f92 14%, #2a273f);
+  --color-hot-tint: #eb6f92;
+}
+
+html[data-style='tokyonight'] {
+  --color-canvas: #e1e2e7;
+  --color-sidebar: #d4d6e4;
+  --color-surface: #eef0f5;
+  --color-sunken: #d9dbe6;
+  --color-raised: #f6f7fa;
+  --color-line: #c8cbdb;
+  --color-line-strong: #b4b8cf;
+  --color-ink: #343b58;
+  --color-ink-2: #4c5374;
+  --color-ink-3: #6172b0;
+  --color-accent: #9854f1;
+  --color-accent-deep: color-mix(in oklab, #9854f1 82%, black);
+  --color-accent-soft: color-mix(in oklab, #9854f1 14%, #eef0f5);
+  --color-accent-ink: color-mix(in oklab, #9854f1 82%, #343b58);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #2e7de9 82%, #343b58);
+  --color-cold-soft: color-mix(in oklab, #2e7de9 14%, #eef0f5);
+  --color-cold-tint: #2e7de9;
+  --color-cool: color-mix(in oklab, #587539 82%, #343b58);
+  --color-cool-soft: color-mix(in oklab, #587539 14%, #eef0f5);
+  --color-cool-tint: #587539;
+  --color-warm: color-mix(in oklab, #b15c00 82%, #343b58);
+  --color-warm-soft: color-mix(in oklab, #b15c00 14%, #eef0f5);
+  --color-warm-tint: #b15c00;
+  --color-hot: color-mix(in oklab, #c4294f 82%, #343b58);
+  --color-hot-soft: color-mix(in oklab, #c4294f 14%, #eef0f5);
+  --color-hot-tint: #c4294f;
+}
+
+html[data-style='tokyonight'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #1a1b26;
+  --color-sidebar: #16161e;
+  --color-surface: #1f2335;
+  --color-sunken: #16161e;
+  --color-raised: #292e42;
+  --color-line: #292e42;
+  --color-line-strong: #3b4261;
+  --color-ink: #c0caf5;
+  --color-ink-2: #a9b1d6;
+  --color-ink-3: #737aa2;
+  --color-accent: #bb9af7;
+  --color-accent-deep: color-mix(in oklab, #bb9af7 82%, white);
+  --color-accent-soft: color-mix(in oklab, #bb9af7 14%, #1f2335);
+  --color-accent-ink: #bb9af7;
+  --color-on-color: #1a1b26;
+  --color-cold: #7aa2f7;
+  --color-cold-soft: color-mix(in oklab, #7aa2f7 14%, #1f2335);
+  --color-cold-tint: #7aa2f7;
+  --color-cool: #9ece6a;
+  --color-cool-soft: color-mix(in oklab, #9ece6a 14%, #1f2335);
+  --color-cool-tint: #9ece6a;
+  --color-warm: #e0af68;
+  --color-warm-soft: color-mix(in oklab, #e0af68 14%, #1f2335);
+  --color-warm-tint: #e0af68;
+  --color-hot: #f7768e;
+  --color-hot-soft: color-mix(in oklab, #f7768e 14%, #1f2335);
+  --color-hot-tint: #f7768e;
+}
+
+html[data-style='solarized'] {
+  --color-canvas: #fdf6e3;
+  --color-sidebar: #eee8d5;
+  --color-surface: #fffbf0;
+  --color-sunken: #f5efdc;
+  --color-raised: #ffffff;
+  --color-line: #e6dfc8;
+  --color-line-strong: #d3cbb0;
+  --color-ink: #073642;
+  --color-ink-2: #586e75;
+  --color-ink-3: #657b83;
+  --color-accent: #268bd2;
+  --color-accent-deep: color-mix(in oklab, #268bd2 82%, black);
+  --color-accent-soft: color-mix(in oklab, #268bd2 14%, #fffbf0);
+  --color-accent-ink: color-mix(in oklab, #268bd2 82%, #073642);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #6c71c4 82%, #073642);
+  --color-cold-soft: color-mix(in oklab, #6c71c4 14%, #fffbf0);
+  --color-cold-tint: #6c71c4;
+  --color-cool: color-mix(in oklab, #859900 82%, #073642);
+  --color-cool-soft: color-mix(in oklab, #859900 14%, #fffbf0);
+  --color-cool-tint: #859900;
+  --color-warm: color-mix(in oklab, #b58900 82%, #073642);
+  --color-warm-soft: color-mix(in oklab, #b58900 14%, #fffbf0);
+  --color-warm-tint: #b58900;
+  --color-hot: color-mix(in oklab, #dc322f 82%, #073642);
+  --color-hot-soft: color-mix(in oklab, #dc322f 14%, #fffbf0);
+  --color-hot-tint: #dc322f;
+}
+
+html[data-style='solarized'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #002b36;
+  --color-sidebar: #00212b;
+  --color-surface: #073642;
+  --color-sunken: #00252f;
+  --color-raised: #0b4250;
+  --color-line: #0e4352;
+  --color-line-strong: #2f5a65;
+  --color-ink: #eee8d5;
+  --color-ink-2: #93a1a1;
+  --color-ink-3: #839496;
+  --color-accent: #268bd2;
+  --color-accent-deep: color-mix(in oklab, #268bd2 82%, white);
+  --color-accent-soft: color-mix(in oklab, #268bd2 14%, #073642);
+  --color-accent-ink: #268bd2;
+  --color-on-color: #fdf6e3;
+  --color-cold: #8c90d8;
+  --color-cold-soft: color-mix(in oklab, #8c90d8 14%, #073642);
+  --color-cold-tint: #8c90d8;
+  --color-cool: #a1b52a;
+  --color-cool-soft: color-mix(in oklab, #a1b52a 14%, #073642);
+  --color-cool-tint: #a1b52a;
+  --color-warm: #cf9f1a;
+  --color-warm-soft: color-mix(in oklab, #cf9f1a 14%, #073642);
+  --color-warm-tint: #cf9f1a;
+  --color-hot: #ef5b4f;
+  --color-hot-soft: color-mix(in oklab, #ef5b4f 14%, #073642);
+  --color-hot-tint: #ef5b4f;
+}
+
+html[data-style='gruvbox'] {
+  --color-canvas: #fbf1c7;
+  --color-sidebar: #f2e5bc;
+  --color-surface: #f9f5d7;
+  --color-sunken: #f2e5bc;
+  --color-raised: #fffbe6;
+  --color-line: #ebdbb2;
+  --color-line-strong: #d5c4a1;
+  --color-ink: #3c3836;
+  --color-ink-2: #504945;
+  --color-ink-3: #7c6f64;
+  --color-accent: #af3a03;
+  --color-accent-deep: color-mix(in oklab, #af3a03 82%, black);
+  --color-accent-soft: color-mix(in oklab, #af3a03 14%, #f9f5d7);
+  --color-accent-ink: color-mix(in oklab, #af3a03 82%, #3c3836);
+  --color-on-color: #fbf1c7;
+  --color-cold: color-mix(in oklab, #076678 82%, #3c3836);
+  --color-cold-soft: color-mix(in oklab, #076678 14%, #f9f5d7);
+  --color-cold-tint: #076678;
+  --color-cool: color-mix(in oklab, #79740e 82%, #3c3836);
+  --color-cool-soft: color-mix(in oklab, #79740e 14%, #f9f5d7);
+  --color-cool-tint: #79740e;
+  --color-warm: color-mix(in oklab, #b57614 82%, #3c3836);
+  --color-warm-soft: color-mix(in oklab, #b57614 14%, #f9f5d7);
+  --color-warm-tint: #b57614;
+  --color-hot: color-mix(in oklab, #9d0006 82%, #3c3836);
+  --color-hot-soft: color-mix(in oklab, #9d0006 14%, #f9f5d7);
+  --color-hot-tint: #9d0006;
+}
+
+html[data-style='gruvbox'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #282828;
+  --color-sidebar: #1d2021;
+  --color-surface: #32302f;
+  --color-sunken: #1d2021;
+  --color-raised: #3c3836;
+  --color-line: #3c3836;
+  --color-line-strong: #504945;
+  --color-ink: #ebdbb2;
+  --color-ink-2: #d5c4a1;
+  --color-ink-3: #a89984;
+  --color-accent: #fe8019;
+  --color-accent-deep: color-mix(in oklab, #fe8019 82%, white);
+  --color-accent-soft: color-mix(in oklab, #fe8019 14%, #32302f);
+  --color-accent-ink: #fe8019;
+  --color-on-color: #282828;
+  --color-cold: #83a598;
+  --color-cold-soft: color-mix(in oklab, #83a598 14%, #32302f);
+  --color-cold-tint: #83a598;
+  --color-cool: #b8bb26;
+  --color-cool-soft: color-mix(in oklab, #b8bb26 14%, #32302f);
+  --color-cool-tint: #b8bb26;
+  --color-warm: #fabd2f;
+  --color-warm-soft: color-mix(in oklab, #fabd2f 14%, #32302f);
+  --color-warm-tint: #fabd2f;
+  --color-hot: #fb4934;
+  --color-hot-soft: color-mix(in oklab, #fb4934 14%, #32302f);
+  --color-hot-tint: #fb4934;
+}
+
+html[data-style='glass'] {
+  --color-canvas: #e9eef8;
+  --color-sidebar: rgb(255 255 255 / 0.45);
+  --color-surface: rgb(255 255 255 / 0.62);
+  --color-sunken: rgb(255 255 255 / 0.4);
+  --color-raised: rgb(255 255 255 / 0.8);
+  --color-line: rgb(255 255 255 / 0.7);
+  --color-line-strong: rgb(0 0 0 / 0.1);
+  --color-ink: #1d1d1f;
+  --color-ink-2: #48484d;
+  --color-ink-3: #6e6e73;
+  --color-accent: #0a84ff;
+  --color-accent-deep: color-mix(in oklab, #0a84ff 82%, black);
+  --color-accent-soft: color-mix(in oklab, #0a84ff 14%, #e9eef8);
+  --color-accent-ink: color-mix(in oklab, #0a84ff 82%, #1d1d1f);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #5856d6 82%, #1d1d1f);
+  --color-cold-soft: color-mix(in oklab, #5856d6 14%, #e9eef8);
+  --color-cold-tint: #5856d6;
+  --color-cool: color-mix(in oklab, #248a3d 82%, #1d1d1f);
+  --color-cool-soft: color-mix(in oklab, #248a3d 14%, #e9eef8);
+  --color-cool-tint: #248a3d;
+  --color-warm: color-mix(in oklab, #b25000 82%, #1d1d1f);
+  --color-warm-soft: color-mix(in oklab, #b25000 14%, #e9eef8);
+  --color-warm-tint: #b25000;
+  --color-hot: color-mix(in oklab, #d70015 82%, #1d1d1f);
+  --color-hot-soft: color-mix(in oklab, #d70015 14%, #e9eef8);
+  --color-hot-tint: #d70015;
+}
+
+html[data-style='glass'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #13151c;
+  --color-sidebar: rgb(30 30 36 / 0.5);
+  --color-surface: rgb(44 44 52 / 0.55);
+  --color-sunken: rgb(20 20 26 / 0.45);
+  --color-raised: rgb(58 58 66 / 0.7);
+  --color-line: rgb(255 255 255 / 0.1);
+  --color-line-strong: rgb(255 255 255 / 0.16);
+  --color-ink: #f5f5f7;
+  --color-ink-2: #c7c7cc;
+  --color-ink-3: #98989d;
+  --color-accent: #0a84ff;
+  --color-accent-deep: color-mix(in oklab, #0a84ff 82%, white);
+  --color-accent-soft: color-mix(in oklab, #0a84ff 14%, #13151c);
+  --color-accent-ink: #0a84ff;
+  --color-on-color: #ffffff;
+  --color-cold: #7d7aff;
+  --color-cold-soft: color-mix(in oklab, #7d7aff 14%, #13151c);
+  --color-cold-tint: #7d7aff;
+  --color-cool: #30d158;
+  --color-cool-soft: color-mix(in oklab, #30d158 14%, #13151c);
+  --color-cool-tint: #30d158;
+  --color-warm: #ff9f0a;
+  --color-warm-soft: color-mix(in oklab, #ff9f0a 14%, #13151c);
+  --color-warm-tint: #ff9f0a;
+  --color-hot: #ff453a;
+  --color-hot-soft: color-mix(in oklab, #ff453a 14%, #13151c);
+  --color-hot-tint: #ff453a;
+}
+
+html[data-style='material'] {
+  --color-canvas: #fef7ff;
+  --color-sidebar: #f3edf7;
+  --color-surface: #f7f2fa;
+  --color-sunken: #ece6f0;
+  --color-raised: #ffffff;
+  --color-line: #e6e0e9;
+  --color-line-strong: #cac4d0;
+  --color-ink: #1d1b20;
+  --color-ink-2: #49454f;
+  --color-ink-3: #79747e;
+  --color-accent: #6750a4;
+  --color-accent-deep: color-mix(in oklab, #6750a4 82%, black);
+  --color-accent-soft: color-mix(in oklab, #6750a4 14%, #f7f2fa);
+  --color-accent-ink: color-mix(in oklab, #6750a4 82%, #1d1b20);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #3f5aa8 82%, #1d1b20);
+  --color-cold-soft: color-mix(in oklab, #3f5aa8 14%, #f7f2fa);
+  --color-cold-tint: #3f5aa8;
+  --color-cool: color-mix(in oklab, #386a20 82%, #1d1b20);
+  --color-cool-soft: color-mix(in oklab, #386a20 14%, #f7f2fa);
+  --color-cool-tint: #386a20;
+  --color-warm: color-mix(in oklab, #8b5000 82%, #1d1b20);
+  --color-warm-soft: color-mix(in oklab, #8b5000 14%, #f7f2fa);
+  --color-warm-tint: #8b5000;
+  --color-hot: color-mix(in oklab, #b3261e 82%, #1d1b20);
+  --color-hot-soft: color-mix(in oklab, #b3261e 14%, #f7f2fa);
+  --color-hot-tint: #b3261e;
+}
+
+html[data-style='material'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #141218;
+  --color-sidebar: #1d1b20;
+  --color-surface: #211f26;
+  --color-sunken: #0f0d13;
+  --color-raised: #2b2930;
+  --color-line: #36343b;
+  --color-line-strong: #49454f;
+  --color-ink: #e6e0e9;
+  --color-ink-2: #cac4d0;
+  --color-ink-3: #938f99;
+  --color-accent: #d0bcff;
+  --color-accent-deep: color-mix(in oklab, #d0bcff 82%, white);
+  --color-accent-soft: color-mix(in oklab, #d0bcff 14%, #211f26);
+  --color-accent-ink: #d0bcff;
+  --color-on-color: #381e72;
+  --color-cold: #adc6ff;
+  --color-cold-soft: color-mix(in oklab, #adc6ff 14%, #211f26);
+  --color-cold-tint: #adc6ff;
+  --color-cool: #9cd67d;
+  --color-cool-soft: color-mix(in oklab, #9cd67d 14%, #211f26);
+  --color-cool-tint: #9cd67d;
+  --color-warm: #ffb870;
+  --color-warm-soft: color-mix(in oklab, #ffb870 14%, #211f26);
+  --color-warm-tint: #ffb870;
+  --color-hot: #f2b8b5;
+  --color-hot-soft: color-mix(in oklab, #f2b8b5 14%, #211f26);
+  --color-hot-tint: #f2b8b5;
+}
+
+html[data-style='fluent'] {
+  --color-canvas: #fafafa;
+  --color-sidebar: #f0f0f0;
+  --color-surface: #ffffff;
+  --color-sunken: #f5f5f5;
+  --color-raised: #ffffff;
+  --color-line: #e0e0e0;
+  --color-line-strong: #d1d1d1;
+  --color-ink: #242424;
+  --color-ink-2: #424242;
+  --color-ink-3: #616161;
+  --color-accent: #0f6cbd;
+  --color-accent-deep: color-mix(in oklab, #0f6cbd 82%, black);
+  --color-accent-soft: color-mix(in oklab, #0f6cbd 14%, #ffffff);
+  --color-accent-ink: color-mix(in oklab, #0f6cbd 82%, #242424);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #5b5fc7 82%, #242424);
+  --color-cold-soft: color-mix(in oklab, #5b5fc7 14%, #ffffff);
+  --color-cold-tint: #5b5fc7;
+  --color-cool: color-mix(in oklab, #107c10 82%, #242424);
+  --color-cool-soft: color-mix(in oklab, #107c10 14%, #ffffff);
+  --color-cool-tint: #107c10;
+  --color-warm: color-mix(in oklab, #9a5600 82%, #242424);
+  --color-warm-soft: color-mix(in oklab, #9a5600 14%, #ffffff);
+  --color-warm-tint: #9a5600;
+  --color-hot: color-mix(in oklab, #c50f1f 82%, #242424);
+  --color-hot-soft: color-mix(in oklab, #c50f1f 14%, #ffffff);
+  --color-hot-tint: #c50f1f;
+}
+
+html[data-style='fluent'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #1f1f1f;
+  --color-sidebar: #191919;
+  --color-surface: #292929;
+  --color-sunken: #141414;
+  --color-raised: #333333;
+  --color-line: #333333;
+  --color-line-strong: #474747;
+  --color-ink: #ffffff;
+  --color-ink-2: #d6d6d6;
+  --color-ink-3: #adadad;
+  --color-accent: #479ef5;
+  --color-accent-deep: color-mix(in oklab, #479ef5 82%, white);
+  --color-accent-soft: color-mix(in oklab, #479ef5 14%, #292929);
+  --color-accent-ink: #479ef5;
+  --color-on-color: #0b0b0b;
+  --color-cold: #9299f7;
+  --color-cold-soft: color-mix(in oklab, #9299f7 14%, #292929);
+  --color-cold-tint: #9299f7;
+  --color-cool: #54b054;
+  --color-cool-soft: color-mix(in oklab, #54b054 14%, #292929);
+  --color-cool-tint: #54b054;
+  --color-warm: #f2a33a;
+  --color-warm-soft: color-mix(in oklab, #f2a33a 14%, #292929);
+  --color-warm-tint: #f2a33a;
+  --color-hot: #ee6c74;
+  --color-hot-soft: color-mix(in oklab, #ee6c74 14%, #292929);
+  --color-hot-tint: #ee6c74;
+}
+
+html[data-style='swiss'] {
+  --color-canvas: #ffffff;
+  --color-sidebar: #f2f2f2;
+  --color-surface: #ffffff;
+  --color-sunken: #f5f5f5;
+  --color-raised: #ffffff;
+  --color-line: #e5e5e5;
+  --color-line-strong: #111111;
+  --color-ink: #111111;
+  --color-ink-2: #333333;
+  --color-ink-3: #666666;
+  --color-accent: #111111;
+  --color-accent-deep: color-mix(in oklab, #111111 82%, black);
+  --color-accent-soft: color-mix(in oklab, #111111 14%, #ffffff);
+  --color-accent-ink: color-mix(in oklab, #111111 82%, #111111);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #1f4fd6 82%, #111111);
+  --color-cold-soft: color-mix(in oklab, #1f4fd6 14%, #ffffff);
+  --color-cold-tint: #1f4fd6;
+  --color-cool: color-mix(in oklab, #007a3d 82%, #111111);
+  --color-cool-soft: color-mix(in oklab, #007a3d 14%, #ffffff);
+  --color-cool-tint: #007a3d;
+  --color-warm: color-mix(in oklab, #a65a00 82%, #111111);
+  --color-warm-soft: color-mix(in oklab, #a65a00 14%, #ffffff);
+  --color-warm-tint: #a65a00;
+  --color-hot: color-mix(in oklab, #e30613 82%, #111111);
+  --color-hot-soft: color-mix(in oklab, #e30613 14%, #ffffff);
+  --color-hot-tint: #e30613;
+}
+
+html[data-style='swiss'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #0b0b0b;
+  --color-sidebar: #000000;
+  --color-surface: #111111;
+  --color-sunken: #080808;
+  --color-raised: #1a1a1a;
+  --color-line: #222222;
+  --color-line-strong: #f2f2f2;
+  --color-ink: #f2f2f2;
+  --color-ink-2: #c8c8c8;
+  --color-ink-3: #8f8f8f;
+  --color-accent: #f2f2f2;
+  --color-accent-deep: color-mix(in oklab, #f2f2f2 82%, white);
+  --color-accent-soft: color-mix(in oklab, #f2f2f2 14%, #111111);
+  --color-accent-ink: #f2f2f2;
+  --color-on-color: #0b0b0b;
+  --color-cold: #7c9cff;
+  --color-cold-soft: color-mix(in oklab, #7c9cff 14%, #111111);
+  --color-cold-tint: #7c9cff;
+  --color-cool: #34c27a;
+  --color-cool-soft: color-mix(in oklab, #34c27a 14%, #111111);
+  --color-cool-tint: #34c27a;
+  --color-warm: #f0a43a;
+  --color-warm-soft: color-mix(in oklab, #f0a43a 14%, #111111);
+  --color-warm-tint: #f0a43a;
+  --color-hot: #ff4b4b;
+  --color-hot-soft: color-mix(in oklab, #ff4b4b 14%, #111111);
+  --color-hot-tint: #ff4b4b;
+}
+
+html[data-style='aero'] {
+  --color-canvas: #dff3ff;
+  --color-sidebar: rgb(255 255 255 / 0.5);
+  --color-surface: rgb(255 255 255 / 0.75);
+  --color-sunken: rgb(255 255 255 / 0.5);
+  --color-raised: #ffffff;
+  --color-line: rgb(255 255 255 / 0.9);
+  --color-line-strong: rgb(0 90 160 / 0.25);
+  --color-ink: #0b2a45;
+  --color-ink-2: #2c4c68;
+  --color-ink-3: #4f6d88;
+  --color-accent: #0a8ae0;
+  --color-accent-deep: color-mix(in oklab, #0a8ae0 82%, black);
+  --color-accent-soft: color-mix(in oklab, #0a8ae0 14%, #dff3ff);
+  --color-accent-ink: color-mix(in oklab, #0a8ae0 82%, #0b2a45);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #1b5fd1 82%, #0b2a45);
+  --color-cold-soft: color-mix(in oklab, #1b5fd1 14%, #dff3ff);
+  --color-cold-tint: #1b5fd1;
+  --color-cool: color-mix(in oklab, #2a8a1f 82%, #0b2a45);
+  --color-cool-soft: color-mix(in oklab, #2a8a1f 14%, #dff3ff);
+  --color-cool-tint: #2a8a1f;
+  --color-warm: color-mix(in oklab, #b0620a 82%, #0b2a45);
+  --color-warm-soft: color-mix(in oklab, #b0620a 14%, #dff3ff);
+  --color-warm-tint: #b0620a;
+  --color-hot: color-mix(in oklab, #c8281e 82%, #0b2a45);
+  --color-hot-soft: color-mix(in oklab, #c8281e 14%, #dff3ff);
+  --color-hot-tint: #c8281e;
+}
+
+html[data-style='aero'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #04213a;
+  --color-sidebar: rgb(4 40 70 / 0.6);
+  --color-surface: rgb(16 64 100 / 0.55);
+  --color-sunken: rgb(2 28 50 / 0.5);
+  --color-raised: rgb(28 86 128 / 0.7);
+  --color-line: rgb(140 210 255 / 0.18);
+  --color-line-strong: rgb(140 210 255 / 0.32);
+  --color-ink: #eaf7ff;
+  --color-ink-2: #b8dcf2;
+  --color-ink-3: #86b6d3;
+  --color-accent: #3cb4ff;
+  --color-accent-deep: color-mix(in oklab, #3cb4ff 82%, white);
+  --color-accent-soft: color-mix(in oklab, #3cb4ff 14%, #04213a);
+  --color-accent-ink: #3cb4ff;
+  --color-on-color: #02223a;
+  --color-cold: #8fb6ff;
+  --color-cold-soft: color-mix(in oklab, #8fb6ff 14%, #04213a);
+  --color-cold-tint: #8fb6ff;
+  --color-cool: #7ee06c;
+  --color-cool-soft: color-mix(in oklab, #7ee06c 14%, #04213a);
+  --color-cool-tint: #7ee06c;
+  --color-warm: #ffc061;
+  --color-warm-soft: color-mix(in oklab, #ffc061 14%, #04213a);
+  --color-warm-tint: #ffc061;
+  --color-hot: #ff7a6e;
+  --color-hot-soft: color-mix(in oklab, #ff7a6e 14%, #04213a);
+  --color-hot-tint: #ff7a6e;
+}
+
+html[data-style='neumorph'] {
+  --color-canvas: #e6e9ef;
+  --color-sidebar: #e6e9ef;
+  --color-surface: #e6e9ef;
+  --color-sunken: #dde1e8;
+  --color-raised: #eceff4;
+  --color-line: transparent;
+  --color-line-strong: #c9ced8;
+  --color-ink: #2d3340;
+  --color-ink-2: #4c5363;
+  --color-ink-3: #6a7182;
+  --color-accent: #5b6cf0;
+  --color-accent-deep: color-mix(in oklab, #5b6cf0 82%, black);
+  --color-accent-soft: color-mix(in oklab, #5b6cf0 14%, #e6e9ef);
+  --color-accent-ink: color-mix(in oklab, #5b6cf0 82%, #2d3340);
+  --color-on-color: #ffffff;
+  --color-cold: color-mix(in oklab, #4553c9 82%, #2d3340);
+  --color-cold-soft: color-mix(in oklab, #4553c9 14%, #e6e9ef);
+  --color-cold-tint: #4553c9;
+  --color-cool: color-mix(in oklab, #2e7d4f 82%, #2d3340);
+  --color-cool-soft: color-mix(in oklab, #2e7d4f 14%, #e6e9ef);
+  --color-cool-tint: #2e7d4f;
+  --color-warm: color-mix(in oklab, #a1600f 82%, #2d3340);
+  --color-warm-soft: color-mix(in oklab, #a1600f 14%, #e6e9ef);
+  --color-warm-tint: #a1600f;
+  --color-hot: color-mix(in oklab, #c0392b 82%, #2d3340);
+  --color-hot-soft: color-mix(in oklab, #c0392b 14%, #e6e9ef);
+  --color-hot-tint: #c0392b;
+}
+
+html[data-style='neumorph'][data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #2b2e33;
+  --color-sidebar: #2b2e33;
+  --color-surface: #2b2e33;
+  --color-sunken: #25282c;
+  --color-raised: #31353a;
+  --color-line: transparent;
+  --color-line-strong: #3c4047;
+  --color-ink: #e6e8ec;
+  --color-ink-2: #b8bcc6;
+  --color-ink-3: #8c919c;
+  --color-accent: #8f9cff;
+  --color-accent-deep: color-mix(in oklab, #8f9cff 82%, white);
+  --color-accent-soft: color-mix(in oklab, #8f9cff 14%, #2b2e33);
+  --color-accent-ink: #8f9cff;
+  --color-on-color: #1b1d21;
+  --color-cold: #9aa6ff;
+  --color-cold-soft: color-mix(in oklab, #9aa6ff 14%, #2b2e33);
+  --color-cold-tint: #9aa6ff;
+  --color-cool: #6fd39b;
+  --color-cool-soft: color-mix(in oklab, #6fd39b 14%, #2b2e33);
+  --color-cool-tint: #6fd39b;
+  --color-warm: #f2b35e;
+  --color-warm-soft: color-mix(in oklab, #f2b35e 14%, #2b2e33);
+  --color-warm-tint: #f2b35e;
+  --color-hot: #ff7f73;
+  --color-hot-soft: color-mix(in oklab, #ff7f73 14%, #2b2e33);
+  --color-hot-tint: #ff7f73;
+}
+
+/* Palette themes use the UI sans for titles and a solid hero number. */
+:is(
+  html[data-style='catppuccin'],
+  html[data-style='nord'],
+  html[data-style='dracula'],
+  html[data-style='rosepine'],
+  html[data-style='tokyonight'],
+  html[data-style='solarized'],
+  html[data-style='gruvbox'],
+  html[data-style='material'],
+  html[data-style='fluent'],
+  html[data-style='swiss'],
+  html[data-style='neumorph']
+) {
+  --font-display: var(--font-sans);
+  --radius-xl: 12px;
+}
+:is(
+    html[data-style='catppuccin'],
+    html[data-style='nord'],
+    html[data-style='dracula'],
+    html[data-style='rosepine'],
+    html[data-style='tokyonight'],
+    html[data-style='solarized'],
+    html[data-style='gruvbox'],
+    html[data-style='material'],
+    html[data-style='fluent'],
+    html[data-style='swiss'],
+    html[data-style='neumorph']
+  )
+  .hero-number {
+  background: none;
+  color: var(--color-ink);
+}
+
+/* Liquid Glass (Apple, 2025): frosted panels over a soft colour wash. */
+html[data-style='glass'] {
+  --font-display: var(--font-sans);
+  --radius-lg: 10px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+}
+html[data-style='glass'] .bg-app,
+html[data-style='glass'] body {
+  background:
+    radial-gradient(1200px 700px at 15% 0%, rgb(120 170 255 / 0.35), transparent 60%),
+    radial-gradient(900px 600px at 100% 30%, rgb(220 150 255 / 0.3), transparent 60%),
+    radial-gradient(900px 700px at 40% 100%, rgb(120 230 210 / 0.25), transparent 60%),
+    var(--color-canvas);
+}
+html[data-style='glass'] aside.chrome,
+html[data-style='glass'] header.chrome {
+  background: var(--color-sidebar);
+  backdrop-filter: blur(30px) saturate(180%);
+}
+html[data-style='glass'] .material,
+html[data-style='glass'] .gloss {
+  background: var(--color-surface);
+  backdrop-filter: blur(24px) saturate(170%);
+  border: 1px solid var(--color-line);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    0 8px 30px -12px rgb(30 40 80 / 0.25);
+}
+html[data-style='glass'][data-theme='dark'] .material,
+html[data-style='glass'][data-theme='dark'] .gloss {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 10px 30px -10px rgb(0 0 0 / 0.6);
+}
+html[data-style='glass'][data-theme='dark'] .bg-app,
+html[data-style='glass'][data-theme='dark'] body {
+  background:
+    radial-gradient(1200px 700px at 15% 0%, rgb(60 90 200 / 0.35), transparent 60%),
+    radial-gradient(900px 600px at 100% 30%, rgb(150 60 200 / 0.3), transparent 60%),
+    var(--color-canvas);
+}
+html[data-style='glass'] .gloss-btn {
+  border-radius: 9999px;
+}
+
+/* Material You (Google): tonal surfaces, no borders, pill buttons. */
+html[data-style='material'] {
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 28px;
+}
+html[data-style='material'] .material,
+html[data-style='material'] .gloss {
+  border-color: transparent;
+  box-shadow: none;
+}
+html[data-style='material'] .gloss-btn {
+  border-radius: 9999px;
+  box-shadow: none;
+}
+
+/* Fluent 2 (Microsoft): neutral layers, small radius, layered shadows. */
+html[data-style='fluent'] {
+  --radius-lg: 4px;
+  --radius-xl: 8px;
+  --shadow-sm: 0 0 2px rgb(0 0 0 / 0.12), 0 1px 2px rgb(0 0 0 / 0.14);
+  --shadow-md: 0 0 2px rgb(0 0 0 / 0.12), 0 4px 8px rgb(0 0 0 / 0.14);
+}
+
+/* Swiss / editorial: black on white, hairlines, heavy tight headings, no shadows. */
+html[data-style='swiss'] {
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --shadow-sm: none;
+  --shadow-md: none;
+}
+html[data-style='swiss'] .material,
+html[data-style='swiss'] .gloss {
+  border: none;
+  border-top: 2px solid var(--color-line-strong);
+  box-shadow: none;
+}
+html[data-style='swiss'] .font-\[family-name\:var\(--font-display\)\] {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+/* Frutiger Aero (mid-2000s, back as a Gen Z trend): sky gradients, glossy aqua. */
+html[data-style='aero'] {
+  --font-display: var(--font-sans);
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+}
+html[data-style='aero'] .bg-app,
+html[data-style='aero'] body {
+  background:
+    radial-gradient(600px 300px at 80% 10%, rgb(255 255 255 / 0.7), transparent 70%),
+    linear-gradient(180deg, #bfe6ff 0%, #e4f6ff 45%, #e2f7e0 100%);
+}
+html[data-style='aero'][data-theme='dark'] .bg-app,
+html[data-style='aero'][data-theme='dark'] body {
+  background:
+    radial-gradient(700px 360px at 80% 0%, rgb(60 180 255 / 0.25), transparent 70%),
+    linear-gradient(180deg, #032038 0%, #052c4a 60%, #063a2e 100%);
+}
+html[data-style='aero'] aside.chrome,
+html[data-style='aero'] header.chrome {
+  background: var(--color-sidebar);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+html[data-style='aero'] .material,
+html[data-style='aero'] .gloss {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.95) 0%, var(--color-surface) 45%);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-line);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 6px 18px -8px rgb(0 80 140 / 0.3);
+}
+html[data-style='aero'][data-theme='dark'] .material,
+html[data-style='aero'][data-theme='dark'] .gloss {
+  background: linear-gradient(180deg, rgb(120 200 255 / 0.14) 0%, var(--color-surface) 45%);
+  box-shadow:
+    inset 0 1px 0 rgb(160 220 255 / 0.25),
+    0 8px 24px -8px rgb(0 0 0 / 0.6);
+}
+html[data-style='aero'] .gloss-btn {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.55) 0%, rgb(255 255 255 / 0) 50%),
+    linear-gradient(180deg, #33b4ff 0%, #0a7fd6 100%);
+  border-radius: 9999px;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 2px 6px rgb(0 90 170 / 0.35);
+}
+html[data-style='aero'] .hero-number {
+  background: linear-gradient(100deg, #0a7fd6 0%, #2a9d3a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Neumorphism: soft extruded surfaces from a single colour. Lower contrast — for testing. */
+html[data-style='neumorph'] {
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --neu-dark: rgb(163 177 198 / 0.65);
+  --neu-light: rgb(255 255 255 / 0.9);
+}
+html[data-style='neumorph'][data-theme='dark'] {
+  --neu-dark: rgb(0 0 0 / 0.45);
+  --neu-light: rgb(255 255 255 / 0.05);
+}
+html[data-style='neumorph'] .material,
+html[data-style='neumorph'] .gloss {
+  border: none;
+  box-shadow:
+    8px 8px 16px var(--neu-dark),
+    -8px -8px 16px var(--neu-light);
+}
+html[data-style='neumorph'] aside.chrome {
+  box-shadow: 6px 0 16px var(--neu-dark);
+}
+html[data-style='neumorph'] .gloss-btn {
+  box-shadow:
+    4px 4px 10px var(--neu-dark),
+    -4px -4px 10px var(--neu-light);
+}
+html[data-style='neumorph'] .gloss-btn:active:not(:disabled) {
+  box-shadow:
+    inset 3px 3px 6px var(--neu-dark),
+    inset -3px -3px 6px var(--neu-light);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.drag {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .chevron {
+  transform: rotate(90deg);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.25s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
+}
+
+/* Wide-tracked uppercase labels, CRED-style. */
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Right-hand panel (chat options): slides in from the edge. */
+@keyframes panel-in {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.panel-in {
+  animation: panel-in 200ms var(--ease-out-soft) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-in {
+    animation: none;
+  }
+}

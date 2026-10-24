@@ -1,0 +1,21 @@
+# Dependencies and build output
+node_modules
+out
+dist
+*.tsbuildinfo
+
+# Local data — never commit real statements, databases or secrets
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.db
+.env
+.env.*
+/private/
+/my-statements/
+
+# OS and tooling
+.DS_Store
+*.log
+.vscode/
+.idea/

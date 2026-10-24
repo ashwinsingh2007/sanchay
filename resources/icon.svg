@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Sanchay: a stack of coins with a sprout — savings that grow. -->
+  <defs>
+    <radialGradient id="bg" cx="0.5" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#1F3A33"/>
+      <stop offset="1" stop-color="#0A0F0E"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2BD99A" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#2BD99A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE596"/>
+      <stop offset="1" stop-color="#F4AA1C"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#4FCB8E"/>
+      <stop offset="1" stop-color="#C2F7DA"/>
+    </linearGradient>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+  <circle cx="512" cy="520" r="340" fill="url(#glow)"/>
+  <rect x="104" y="104" width="816" height="816" rx="181" fill="none" stroke="#FFFFFF" stroke-opacity=".08" stroke-width="8"/>
+  <g transform="translate(-30 -18)">
+    <g transform="translate(500 730)">
+      <path d="M-196 0 v46 a196 64 0 0 0 392 0 v-46 z" fill="#D08508"/>
+      <path d="M-196 22 a196 64 0 0 0 392 0" fill="none" stroke="#B86F00" stroke-opacity=".45" stroke-width="6"/>
+      <ellipse cx="0" cy="0" rx="196" ry="64" fill="url(#gold)"/>
+      <ellipse cx="0" cy="0" rx="146" ry="44" fill="none" stroke="#C98200" stroke-opacity=".35" stroke-width="10"/>
+    </g>
+    <g transform="translate(542 618)">
+      <path d="M-196 0 v46 a196 64 0 0 0 392 0 v-46 z" fill="#D08508"/>
+      <path d="M-196 22 a196 64 0 0 0 392 0" fill="none" stroke="#B86F00" stroke-opacity=".45" stroke-width="6"/>
+      <ellipse cx="0" cy="0" rx="196" ry="64" fill="url(#gold)"/>
+      <ellipse cx="0" cy="0" rx="146" ry="44" fill="none" stroke="#C98200" stroke-opacity=".35" stroke-width="10"/>
+    </g>
+    <g transform="translate(584 506)">
+      <path d="M-196 0 v46 a196 64 0 0 0 392 0 v-46 z" fill="#D08508"/>
+      <path d="M-196 22 a196 64 0 0 0 392 0" fill="none" stroke="#B86F00" stroke-opacity=".45" stroke-width="6"/>
+      <ellipse cx="0" cy="0" rx="196" ry="64" fill="url(#gold)"/>
+      <ellipse cx="0" cy="0" rx="146" ry="44" fill="none" stroke="#C98200" stroke-opacity=".35" stroke-width="10"/>
+    </g>
+    <path d="M584 476 L584 352" stroke="#4FCB8E" stroke-width="30" stroke-linecap="round"/>
+    <path d="M584 374 C 543 288 452 278 402 306 C 431 376 510 404 584 374 Z" fill="url(#leaf)"/>
+    <path d="M584 352 C 632 244 752 224 800 266 C 770 356 670 394 584 352 Z" fill="url(#leaf)"/>
+  </g>
+</svg>
