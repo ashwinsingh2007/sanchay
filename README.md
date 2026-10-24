@@ -7,6 +7,7 @@
 <p align="center">A private AI CFO for your Mac. Upload your statements, connect your portfolio, and get a money plan built from your own numbers.</p>
 
 <p align="center">
+  <a href="https://github.com/sanchayhq/sanchay/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/sanchayhq/sanchay/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: AGPL-3.0" src="https://img.shields.io/badge/license-AGPL--3.0-0f766e"></a>
   <img alt="Platform: macOS" src="https://img.shields.io/badge/platform-macOS-111">
   <img alt="Status: early" src="https://img.shields.io/badge/status-early%20preview-f4aa1c">
@@ -15,6 +16,10 @@
 _Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people in India who want to see where their money goes and what to do next, without giving their bank login to anyone.
 
 > Sanchay gives budgeting and informational insights based on your data. It is not a SEBI-registered investment adviser, and nothing in it is investment, tax or legal advice.
+
+<p align="center">
+  <img src="docs/screenshots/today.png" alt="The Today page: a note from your CFO, this month's spending, savings and safe-to-spend, and next moves" width="900">
+</p>
 
 ## What it does
 
@@ -29,6 +34,21 @@ The CFO review looks at your investments: allocation against a target for your a
 "Ask your CFO" is a chat about your numbers. It can look up live market data and answers with tables, sources and the maths behind them.
 
 Sanchay can also connect read-only to INDmoney, to brokers (Zerodha, Groww, Dhan, Upstox, FYERS, Kotak Neo) and to market-data services (Tapetide, TradingView) through their official MCP servers. Any tool that could place an order or change something is blocked.
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/chat.png" alt="Ask your CFO answering where to save 5,000 rupees next month, as a table"></td>
+    <td><img src="docs/screenshots/freedom.png" alt="The Freedom page with an estimated financial-independence date and the fastest ways to get there"></td>
+    <td><img src="docs/screenshots/categories.png" alt="The Categories page with a spending donut, the biggest changes since last month and spending by month"></td>
+  </tr>
+  <tr>
+    <td align="center">Ask your CFO</td>
+    <td align="center">Freedom</td>
+    <td align="center">Categories</td>
+  </tr>
+</table>
+
+All screenshots use the built-in sample data.
 
 ## Privacy
 

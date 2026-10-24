@@ -9,7 +9,11 @@ Sanchay handles bank statements, salaries and portfolios, so please be careful w
 - Never attach a real statement, payslip or CAS file to an issue or pull request, and never commit one.
 - When a statement doesn't import correctly, describe the layout (column names, date format, how debits and credits are shown) or make a copy with the names, account numbers and amounts replaced.
 - Test fixtures must be synthetic. `npm run fixture` regenerates the sample CSVs in `fixtures/`, and `src/shared/sampleData.ts` builds made-up statements you can extend.
-- Screenshots should use the sample data ("Use sample data to explore the app" on first launch), not your own.
+- Screenshots should use the sample data, not your own. To keep your real data untouched, run a separate copy with its own data folder, then choose "Use sample data" during setup:
+
+  ```bash
+  SANCHAY_DATA_DIR=/tmp/sanchay-demo npm run dev
+  ```
 
 ## Setting up
 

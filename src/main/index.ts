@@ -50,11 +50,13 @@ function lockDownNetwork(): void {
 
 // The app was called "Personal AI CFO" before it became Sanchay. Its data folder (database,
 // window state, preferences) moves to the new name once, before Chromium opens it.
+// SANCHAY_DATA_DIR points a copy of the app at another folder, e.g. to try the sample data.
 app.setName('Sanchay')
 {
-  const current = join(app.getPath('appData'), 'Sanchay')
+  const override = process.env['SANCHAY_DATA_DIR']
+  const current = override || join(app.getPath('appData'), 'Sanchay')
   const legacy = join(app.getPath('appData'), 'Personal AI CFO')
-  if (!existsSync(current) && existsSync(legacy)) {
+  if (!override && !existsSync(current) && existsSync(legacy)) {
     try {
       renameSync(legacy, current)
     } catch (err) {
