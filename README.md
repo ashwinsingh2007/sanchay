@@ -62,16 +62,17 @@ On first launch, pick "Use sample data to explore the app" to load six months of
 
 ## Scripts
 
-| Script                            | What it does                                                   |
-| --------------------------------- | -------------------------------------------------------------- |
-| `npm run dev`                     | Run the app in development (hot reload)                        |
-| `npm run build`                   | Typecheck, then production build into `out/`                   |
-| `npm start`                       | Run the production build                                       |
-| `npm test`                        | Unit tests (Vitest)                                            |
-| `npm run lint` / `npm run format` | ESLint / Prettier                                              |
-| `npm run db:generate`             | Generate a SQL migration after editing `src/main/db/schema.ts` |
-| `npm run fixture`                 | Regenerate the synthetic fixture CSVs in `fixtures/`           |
-| `npm run dist`                    | Build an unsigned macOS `.dmg`                                 |
+| Script                            | What it does                                                                                                                        |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                     | Run the app in development (hot reload)                                                                                             |
+| `npm run build`                   | Typecheck, then production build into `out/`                                                                                        |
+| `npm start`                       | Run the production build                                                                                                            |
+| `npm test`                        | Unit tests (Vitest)                                                                                                                 |
+| `npm run lint` / `npm run format` | ESLint / Prettier                                                                                                                   |
+| `npm run db:generate`             | Generate a SQL migration after editing `src/main/db/schema.ts`                                                                      |
+| `npm run fixture`                 | Regenerate the synthetic fixture CSVs in `fixtures/`                                                                                |
+| `npm run dist`                    | Build an unsigned macOS `.dmg`                                                                                                      |
+| `npm run release:mac`             | Build a signed, notarized `.dmg` (maintainers only: needs the Developer ID certificate and a `sanchay-notarize` notarytool profile) |
 
 ## Architecture
 

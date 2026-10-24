@@ -27,7 +27,8 @@
     "db:generate": "drizzle-kit generate",
     "fixture": "node --experimental-strip-types scripts/generate-fixture.ts",
     "postinstall": "electron-builder install-app-deps",
-    "dist": "npm run build && electron-builder --mac"
+    "dist": "npm run build && electron-builder --mac -c.mac.identity=null -c.mac.notarize=false",
+    "release:mac": "npm run build && APPLE_KEYCHAIN_PROFILE=sanchay-notarize electron-builder --mac"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
