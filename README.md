@@ -65,7 +65,13 @@ Data leaves your Mac only through features you turn on:
 
 The app window can't reach the internet. It cancels every request except those for the bundled app, so network calls happen only in the main process and only for the services above. API keys and sign-in tokens are encrypted with the macOS Keychain (`safeStorage`). The database itself is not encrypted by the app, so turn on FileVault.
 
+## Download
+
+Get the latest `.dmg` from [Releases](https://github.com/sanchayhq/sanchay/releases), open it and drag Sanchay to Applications. It runs on Macs with Apple silicon (M1 or later), and it's signed and notarized by Apple, so it opens without warnings.
+
 ## Quick start
+
+To run it from source instead:
 
 You need macOS, Node.js 22 or later (tested on 24) and npm.
 
