@@ -1,0 +1,26 @@
+name: Feature request
+description: Suggest something Sanchay should do.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The money question or task you want help with. Describe the problem before the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like Sanchay to do?
+    validations:
+      required: true
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Does it need data to leave your Mac?
+      description: For example a new data source or a cloud service. Say what would be sent and to whom, or "no".
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: How do you handle it today?

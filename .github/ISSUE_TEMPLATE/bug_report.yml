@@ -1,0 +1,52 @@
+name: Bug report
+description: Something in Sanchay is broken or gives a wrong number.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please don't paste real statements, account numbers, PAN, salary figures or screenshots of your own data. Use the sample data or replace the details first.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Transactions page
+        2. Filter by ...
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Sanchay version or commit
+      placeholder: 0.1.0, or the commit hash if you run from source
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: macOS 26.1
+  - type: dropdown
+    id: ai
+    attributes:
+      label: AI provider in use
+      options:
+        - None
+        - Ollama (local)
+        - Claude Code
+        - Anthropic API
+        - Gemini
+        - OpenAI
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error messages or logs
+      description: Remove any personal details before pasting.
+      render: text

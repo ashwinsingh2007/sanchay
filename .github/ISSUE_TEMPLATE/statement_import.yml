@@ -1,0 +1,43 @@
+name: Statement won't import
+description: A bank, card, payslip or CAS file is rejected or read wrongly.
+labels: [statement-format]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never attach the real file.** Describe its layout instead, or attach a copy where every name, account number and amount has been changed.
+  - type: input
+    id: issuer
+    attributes:
+      label: Bank or issuer
+      placeholder: HDFC savings account, ICICI Amazon Pay card, CAMS CAS, ...
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: File type
+      options:
+        - PDF
+        - PDF (password-protected)
+        - CSV
+    validations:
+      required: true
+  - type: textarea
+    id: layout
+    attributes:
+      label: Layout
+      description: The column headers, the date format, and how debits and credits are shown (separate columns, a minus sign, Dr/Cr, ...).
+      placeholder: |
+        Columns: Date | Narration | Chq./Ref.No. | Withdrawal Amt. | Deposit Amt. | Closing Balance
+        Dates look like 01/09/26
+        Debits and credits are in separate columns
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What Sanchay did
+      description: The error message, or what came out wrong (missing rows, wrong signs, wrong dates).
+    validations:
+      required: true

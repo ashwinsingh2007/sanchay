@@ -3,3 +3,5 @@ dist
 node_modules
 src/main/db/migrations
 package-lock.json
+CODE_OF_CONDUCT.md
+LICENSE

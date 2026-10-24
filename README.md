@@ -172,13 +172,7 @@ Supported date formats include `2026-09-01`, `01/09/2026`, `09/01/2026`, `01-Sep
 
 ## Contributing
 
-Issues and pull requests are welcome. Before opening a pull request, run:
-
-```bash
-npm run typecheck && npm run lint && npm test
-```
-
-Never commit real statements or personal data. Use `npm run fixture` or the built-in sample data instead. The rules for colours, themes and type are in [DESIGN.md](DESIGN.md).
+Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to set up, which checks to run and how to keep personal data out of reports. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security problems privately as described in [SECURITY.md](SECURITY.md).
 
 ## License
 
