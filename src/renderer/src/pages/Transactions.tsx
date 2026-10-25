@@ -258,7 +258,7 @@ export function TransactionsPage(): React.JSX.Element {
         description={
           view === 'calendar'
             ? 'Tap a day to see what you spent. Darker days cost more.'
-            : 'Search, recategorise and teach your AI CFO how to handle your merchants.'
+            : 'Search, recategorise and teach Sanchay how to handle your merchants.'
         }
         actions={
           <>
@@ -289,7 +289,7 @@ export function TransactionsPage(): React.JSX.Element {
               variant="ghost"
               icon={<Sparkles className="size-4" />}
               loading={sorting}
-              title="Re-check every category with the latest rules and your AI CFO"
+              title="Re-check every category with the latest rules and Sanchay"
               onClick={() => {
                 setSorting(true)
                 void recategorise().finally(() => setSorting(false))

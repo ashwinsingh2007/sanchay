@@ -21,7 +21,7 @@ mac:
   entitlementsInherit: resources/entitlements.mac.plist
   notarize: true
   extendInfo:
-    NSMicrophoneUsageDescription: Lets you talk to your AI CFO. Audio is transcribed on this Mac.
+    NSMicrophoneUsageDescription: Lets you talk to Sanchay. Audio is transcribed on this Mac.
 dmg:
   artifactName: ${productName}-${version}-${arch}.${ext}
 npmRebuild: true

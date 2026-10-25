@@ -16,7 +16,7 @@ import { api, cn } from '../lib/utils'
 
 const SECTIONS = ['You', 'Debt', 'Protection', 'Assets', 'Plans'] as const
 
-/** What your AI CFO should know beyond statements. Every question is optional. */
+/** What Sanchay should know beyond statements. Every question is optional. */
 export function ProfilePage(): React.JSX.Element {
   const india = isIndia(useCurrency())
   const profile = useQuery(() => api.listProfile())
@@ -33,9 +33,9 @@ export function ProfilePage(): React.JSX.Element {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow="Your CFO"
-        title="CFO profile"
-        description="The things statements and INDmoney can't show. Answer what you like, skip the rest — you can also just tell your AI CFO in chat and it will remember."
+        eyebrow="Sanchay"
+        title="Money profile"
+        description="The things statements and INDmoney can't show. Answer what you like, skip the rest — you can also just tell Sanchay in chat and it will remember."
       />
       <Card>
         <div className="flex items-center gap-4 p-5">
@@ -69,12 +69,12 @@ export function ProfilePage(): React.JSX.Element {
               <MessageSquare className="size-4" /> Remembered from chat
             </span>
           }
-          description="Facts your AI CFO saved while you talked."
+          description="Facts Sanchay saved while you talked."
         />
         <ul className="divide-y divide-line px-5 pb-3">
           {notes.length === 0 && (
             <li className="py-3 text-[13px] text-ink-3">
-              Nothing yet. Try telling the AI CFO “I have a{' '}
+              Nothing yet. Try telling Sanchay “I have a{' '}
               {india ? '₹20L home loan at 8.6%' : '$350,000 mortgage at 6.5%'}”.
             </li>
           )}

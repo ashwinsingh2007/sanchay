@@ -417,7 +417,7 @@ export function FreedomPage(): React.JSX.Element {
                 )
               }
             >
-              Plan with AI CFO
+              Plan with Sanchay
             </Button>
           </div>
         </Card>

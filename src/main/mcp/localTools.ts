@@ -31,7 +31,7 @@ export const LOCAL_TOOLS: LocalTool[] = [
   {
     name: 'cfo_review',
     description:
-      "The CFO review: the agreed, computed numbers for the user's whole picture — net worth, cash, typical monthly spend, emergency-fund target, investable surplus, allocation now vs target, top stocks and sector exposure, mutual funds by category (ELSS count, costly and lagging funds), protection gaps, and prioritised findings. Call this first for any question about investing, allocation or 'what should I do with my money', and quote its numbers.",
+      "The portfolio review: the agreed, computed numbers for the user's whole picture — net worth, cash, typical monthly spend, emergency-fund target, investable surplus, allocation now vs target, top stocks and sector exposure, mutual funds by category (ELSS count, costly and lagging funds), protection gaps, and prioritised findings. Call this first for any question about investing, allocation or 'what should I do with my money', and quote its numbers.",
     inputSchema: { type: 'object', properties: {} },
     run: (db) => {
       const review = getCfoReview(db)
@@ -43,7 +43,7 @@ export const LOCAL_TOOLS: LocalTool[] = [
   {
     name: 'get_profile',
     description:
-      "The user's CFO profile: age, dependents, risk appetite, tax regime, loans, insurance, LIC/ULIP policies, assets outside INDmoney, emergency fund, other income, big upcoming expenses, plus facts saved from earlier chats. Lists what is still unknown.",
+      "The user's money profile: age, dependents, risk appetite, tax regime, loans, insurance, LIC/ULIP policies, assets outside INDmoney, emergency fund, other income, big upcoming expenses, plus facts saved from earlier chats. Lists what is still unknown.",
     inputSchema: { type: 'object', properties: {} },
     run: (db) => profileDigest(listProfile(db))
   },
@@ -64,7 +64,7 @@ export const LOCAL_TOOLS: LocalTool[] = [
       const key = str(args['key'])
       if (key) setProfileAnswer(db, key, fact, 'chat')
       else addProfileNote(db, fact)
-      return 'Saved to the CFO profile.'
+      return 'Saved to the money profile.'
     }
   },
   {

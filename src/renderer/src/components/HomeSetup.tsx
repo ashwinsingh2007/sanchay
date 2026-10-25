@@ -43,13 +43,13 @@ export function HomeSetup({ hasStatements }: { hasStatements: boolean }): React.
     },
     {
       done: ai.ready,
-      title: 'Set up your AI CFO',
+      title: 'Set up Sanchay’s AI',
       detail: 'Claude Code on this Mac, or a Claude / OpenAI key.',
       action: () => go('ai')
     },
     {
       done: answered >= 6,
-      title: `Tell your CFO about you (${answered}/${PROFILE_QUESTIONS.length})`,
+      title: `Tell Sanchay about you (${answered}/${PROFILE_QUESTIONS.length})`,
       detail: 'Loans, insurance, dependents, risk appetite — skip anything, add more in chat.',
       action: () => go('profile')
     },
@@ -66,8 +66,8 @@ export function HomeSetup({ hasStatements }: { hasStatements: boolean }): React.
   return (
     <Card>
       <CardHeader
-        title="Finish setting up your CFO"
-        description={`${steps.length - left} of ${steps.length} done — each step gives your CFO more to work with.`}
+        title="Finish setting up Sanchay"
+        description={`${steps.length - left} of ${steps.length} done — each step gives Sanchay more to work with.`}
       />
       <ul className="grid gap-1 p-3 pt-3 md:grid-cols-2">
         {steps

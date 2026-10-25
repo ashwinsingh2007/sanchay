@@ -218,7 +218,7 @@ export function AiSetup({
       const t = await api.testAi()
       setTest(t)
       if (t.ok) {
-        toast('Your AI CFO is ready')
+        toast('Sanchay is ready')
         onReady?.(s)
       }
     }

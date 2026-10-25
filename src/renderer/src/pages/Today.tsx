@@ -100,7 +100,7 @@ function CfoNote({ prompts }: { prompts: string[] }): React.JSX.Element {
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
             <p className="text-[13px] font-medium text-ink-2">
-              Your CFO&apos;s note
+              Sanchay&apos;s note
               {briefing.data && (
                 <span className="font-normal text-ink-3">
                   {' '}
@@ -148,8 +148,8 @@ function CfoNote({ prompts }: { prompts: string[] }): React.JSX.Element {
           <input
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Ask your CFO anything about your money…"
-            aria-label="Ask your CFO"
+            placeholder="Ask Sanchay anything about your money…"
+            aria-label="Ask Sanchay"
             className="h-8 min-w-0 flex-1 bg-transparent text-[14px] outline-none placeholder:text-ink-3"
           />
           <VoiceButton onText={(t) => setText((cur) => (cur ? `${cur} ${t}` : t))} />

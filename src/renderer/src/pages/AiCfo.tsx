@@ -5,10 +5,15 @@ import {
   Cpu,
   Lock,
   PanelRight,
+  PiggyBank,
   Plug,
+  ReceiptText,
+  ShieldCheck,
   Square,
   SquarePen,
+  Target,
   Trash2,
+  TrendingUp,
   UserRound,
   Wrench,
   X
@@ -18,28 +23,70 @@ import { formatMoney } from '@shared/money'
 import { isIndia } from '@shared/region'
 import type { AiStatus, ChatMessage, Conversation } from '@shared/types'
 import { AiSetup } from '../components/AiSetup'
+import { Logo } from '../components/Logo'
 import { VoiceButton } from '../components/VoiceButton'
 import { Button, Card, Spinner } from '../components/ui'
 import { useCurrency } from '../lib/hooks'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
 
-const SUGGESTIONS = {
-  india: [
-    'Review my portfolio — what should I change?',
-    'Where should I put the idle cash in my savings account?',
-    'Where can I save ₹5,000 next month?',
-    'Which of my mutual funds are underperforming?',
-    'Am I adequately insured for my family?',
-    'Am I on track for my goals?'
-  ],
-  global: [
-    'Which subscriptions should I cut?',
-    'Where can I save $300 next month?',
-    'How big should my emergency fund be?',
-    'Why did I spend more last month?',
-    'Am I on track for my goals?'
-  ]
+type Starter = { icon: ReactNode; title: string; prompt: string }
+
+/** The four cards on a new chat, then a few more questions as chips. */
+const STARTERS: Record<'india' | 'global', { cards: Starter[]; more: string[] }> = {
+  india: {
+    cards: [
+      {
+        icon: <PiggyBank className="size-4" />,
+        title: 'Save more',
+        prompt: 'Where can I save ₹5,000 next month?'
+      },
+      {
+        icon: <TrendingUp className="size-4" />,
+        title: 'Investments',
+        prompt: 'Review my portfolio — what should I change?'
+      },
+      {
+        icon: <Target className="size-4" />,
+        title: 'Goals',
+        prompt: 'Am I on track for my goals?'
+      },
+      {
+        icon: <ShieldCheck className="size-4" />,
+        title: 'Protection',
+        prompt: 'Am I adequately insured for my family?'
+      }
+    ],
+    more: [
+      'Where should I put the idle cash in my savings account?',
+      'Which of my mutual funds are underperforming?'
+    ]
+  },
+  global: {
+    cards: [
+      {
+        icon: <PiggyBank className="size-4" />,
+        title: 'Save more',
+        prompt: 'Where can I save $300 next month?'
+      },
+      {
+        icon: <ReceiptText className="size-4" />,
+        title: 'Spending',
+        prompt: 'Why did I spend more last month?'
+      },
+      {
+        icon: <Target className="size-4" />,
+        title: 'Goals',
+        prompt: 'Am I on track for my goals?'
+      },
+      {
+        icon: <ShieldCheck className="size-4" />,
+        title: 'Safety net',
+        prompt: 'How big should my emergency fund be?'
+      }
+    ],
+    more: ['Which subscriptions should I cut?']
+  }
 }
 
 /** Renders **bold**, `code` and line breaks safely (no HTML injection). */
@@ -230,7 +277,7 @@ function Bubble({
   /** Data sources the AI is reading while it answers. */
   tools?: string[]
 }): React.JSX.Element {
-  // Your messages sit in a soft bubble on the right; the CFO answers in plain, full-width text.
+  // Your messages sit in a soft bubble on the right; Sanchay answers in plain, full-width text.
   if (m.role === 'user') {
     return (
       <div className="flex justify-end">
@@ -338,7 +385,7 @@ function ChatPanel({
             </DialogPrimitive.Close>
           </div>
           <DialogPrimitive.Description className="sr-only">
-            Your conversations with the AI CFO, and chat options.
+            Your conversations with Sanchay, and chat options.
           </DialogPrimitive.Description>
           <div className="px-3">
             <button
@@ -486,7 +533,7 @@ export function AiCfoPage(): React.JSX.Element {
     })
   }, [toast])
 
-  // Pre-fill (or send) prompts from "Ask AI CFO" buttons and the Today page.
+  // Pre-fill (or send) prompts from "Ask Sanchay" buttons and the Today page.
   const sendRef = useRef<(text: string) => Promise<void>>(async () => undefined)
   useEffect(() => {
     if (draft === null || !status?.ready) return
@@ -527,13 +574,13 @@ export function AiCfoPage(): React.JSX.Element {
 
   sendRef.current = send
 
-  if (!status) return <Spinner label="Waking up your AI CFO" />
+  if (!status) return <Spinner label="Waking up Sanchay" />
 
   if (!status.ready || showSetup) {
     return (
       <div className="mx-auto max-w-[980px] px-8 py-8">
         <h1 className="font-[family-name:var(--font-display)] text-[30px] font-semibold tracking-tight">
-          Set up your AI CFO
+          Set up Sanchay’s AI
         </h1>
         <p className="mt-1 text-[14px] text-ink-2">
           Pick where your AI runs. On-device keeps every byte on this Mac.
@@ -582,8 +629,8 @@ export function AiCfoPage(): React.JSX.Element {
           }
         }}
         rows={1}
-        placeholder="Ask your CFO anything…"
-        aria-label="Message your AI CFO"
+        placeholder="Ask Sanchay anything…"
+        aria-label="Message Sanchay"
         className="block max-h-48 min-h-[44px] w-full resize-none bg-transparent px-2.5 py-2 text-[15px] leading-relaxed outline-none placeholder:text-ink-3 focus-visible:outline-none"
         style={{ fieldSizing: 'content' } as React.CSSProperties}
       />
@@ -664,32 +711,71 @@ export function AiCfoPage(): React.JSX.Element {
       />
 
       {empty ? (
-        <div className="flex flex-1 flex-col items-center justify-center px-8 pb-16">
-          <div className="w-full max-w-[720px]">
-            <h1 className="text-center font-[family-name:var(--font-display)] text-[30px] font-semibold tracking-tight">
-              What&apos;s on your mind?
-            </h1>
-            <p className="mx-auto mt-1.5 max-w-[480px] text-center text-[14px] text-ink-3">
-              {india
-                ? 'I know your statements, INDmoney portfolio and profile, and I can look up live prices.'
-                : 'I know your statements, your goals and what you have told me.'}{' '}
-              Type or tap the mic.
-            </p>
+        // A new chat opens as a welcome from Sanchay; the first question switches to the full chat.
+        <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-8 pb-12 pt-14">
+          <div className="my-auto w-full max-w-[760px]">
+            <div className="flex flex-col items-center text-center">
+              <div className="relative">
+                <div className="absolute -inset-5 rounded-full bg-accent/15 blur-2xl" aria-hidden />
+                <Logo className="relative size-16 rounded-[18px] shadow-lg" />
+              </div>
+              <p className="mt-5 text-[12px] font-medium uppercase tracking-[0.14em] text-accent-ink">
+                Your personal money manager
+              </p>
+              <h1 className="mt-1.5 font-[family-name:var(--font-display)] text-[34px] font-semibold tracking-tight">
+                Hi, I&apos;m Sanchay. How can I help?
+              </h1>
+              <p className="mt-2 max-w-[520px] text-[14.5px] leading-relaxed text-ink-2">
+                {india
+                  ? 'I know your statements, your INDmoney portfolio and your profile, and I can look up live prices.'
+                  : 'I know your statements, your goals and what you have told me.'}{' '}
+                Ask me anything about your money, in your own words.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-[11.5px] text-ink-3">
+                {status.isCloud ? <Cloud className="size-3" /> : <Lock className="size-3" />}
+                {status.isCloud
+                  ? 'Names and account numbers are masked before anything is sent'
+                  : 'Private: everything stays on this Mac'}
+              </span>
+            </div>
             <div className="mt-7">{composer}</div>
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {(india
-                ? SUGGESTIONS.india
-                : SUGGESTIONS.global.map((q) => q.replace('$300', formatMoney(30_000, currency)))
-              ).map((q) => (
+            <div className="mt-5 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+              {(india ? STARTERS.india : STARTERS.global).cards.map((c) => {
+                const prompt = india
+                  ? c.prompt
+                  : c.prompt.replace('$300', formatMoney(30_000, currency))
+                return (
+                  <button
+                    key={c.title}
+                    onClick={() => void send(prompt)}
+                    className="group flex flex-col items-start gap-2 rounded-xl border border-line bg-surface p-3.5 text-left transition-colors hover:border-accent/50 hover:bg-accent-soft/40"
+                  >
+                    <span className="flex size-7 items-center justify-center rounded-lg bg-accent-soft text-accent-ink">
+                      {c.icon}
+                    </span>
+                    <span className="text-[13px] font-semibold text-ink">{c.title}</span>
+                    <span className="text-[12.5px] leading-snug text-ink-3 group-hover:text-ink-2">
+                      {prompt}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              {(india ? STARTERS.india : STARTERS.global).more.map((q) => (
                 <button
                   key={q}
                   onClick={() => void send(q)}
-                  className="rounded-full border border-line px-3.5 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-accent/50 hover:text-ink"
+                  className="rounded-full border border-line px-3.5 py-1.5 text-[12.5px] text-ink-2 transition-colors hover:border-accent/50 hover:text-ink"
                 >
                   {q}
                 </button>
               ))}
             </div>
+            <p className="mt-6 text-center text-[11px] text-ink-3">
+              Type, or tap the mic to talk.{' '}
+              {india ? 'Not SEBI-registered investment advice.' : 'Not investment advice.'}
+            </p>
           </div>
         </div>
       ) : (

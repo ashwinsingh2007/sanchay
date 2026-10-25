@@ -53,7 +53,7 @@ export function listOffers(db: Db): OffersResult {
     supported,
     reason: supported
       ? null
-      : 'Live offers need web search. Choose Google Gemini or Anthropic Claude in Settings → AI CFO. Only merchant names are searched — never your amounts or statements.',
+      : 'Live offers need web search. Choose Google Gemini or Anthropic Claude in Settings → AI. Only merchant names are searched — never your amounts or statements.',
     merchants: offerMerchants(db),
     foundAt: offers[0]?.foundAt ?? null
   }
@@ -112,7 +112,7 @@ export async function findOffers(db: Db): Promise<OffersResult> {
     return {
       ...current,
       supported: false,
-      reason: `Add your ${PROVIDER_META[provider].name} API key in Settings → AI CFO.`
+      reason: `Add your ${PROVIDER_META[provider].name} API key in Settings → AI.`
     }
   const merchants = current.merchants
   if (merchants.length === 0) return current

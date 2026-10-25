@@ -36,9 +36,9 @@ export function DataSourcesPage(): React.JSX.Element {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow="Your CFO"
+        eyebrow="Sanchay"
         title="Data sources"
-        description="Connect where your money lives and where market data comes from. Your AI CFO reads from these while you chat — read-only, nothing can be traded or changed."
+        description="Connect where your money lives and where market data comes from. Sanchay reads from these while you chat — read-only, nothing can be traded or changed."
       />
       {!sources.data ? (
         <Spinner label="Checking your data sources" />
@@ -66,14 +66,14 @@ export function DataSourcesPage(): React.JSX.Element {
           {brokers.length > 0 && (
             <Group
               title="Brokers"
-              note="Official connectors. Your CFO can only read — orders, exits and conversions are blocked."
+              note="Official connectors. Sanchay can only read — orders, exits and conversions are blocked."
             >
               {brokers.map((s) => (
                 <SourceCard key={s.id} source={s} />
               ))}
             </Group>
           )}
-          <Group title="Market research" note="Live prices, fundamentals and news for your CFO.">
+          <Group title="Market research" note="Live prices, fundamentals and news for Sanchay.">
             {sources.data
               .filter((s) => s.group === 'market')
               .map((s) => (
@@ -306,7 +306,7 @@ function SourceCard({ source: s }: { source: DataSourceInfo }): React.JSX.Elemen
         {s.tools && (
           <details>
             <summary className="cursor-pointer text-[12.5px] text-ink-2">
-              {usable.length} tools your CFO can use
+              {usable.length} tools Sanchay can use
               {blocked.length > 0 && ` · ${blocked.length} blocked (could change data)`}
             </summary>
             <ul className="mt-2 grid gap-1.5 text-[12px] md:grid-cols-2">

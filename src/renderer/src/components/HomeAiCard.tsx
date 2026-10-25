@@ -38,7 +38,7 @@ export function HomeAiCard(): React.JSX.Element | null {
       const s = await api.configureAi(input)
       setSettings(await api.getSettings())
       const test = s.ready ? await api.testAi() : null
-      if (test?.ok) toast('Your AI CFO is ready')
+      if (test?.ok) toast('Sanchay is ready')
       else toast(test?.message ?? 'Could not finish setup.', 'error')
       status.reload()
     } catch (e) {
@@ -54,10 +54,10 @@ export function HomeAiCard(): React.JSX.Element | null {
         <CardHeader
           title={
             <span className="flex items-center gap-2">
-              <Terminal className="size-4" aria-hidden /> Use Claude Code as your AI CFO
+              <Terminal className="size-4" aria-hidden /> Run Sanchay on Claude Code
             </span>
           }
-          description="Claude Code is signed in on this Mac, so your AI CFO can run on your Claude plan — no API key needed."
+          description="Claude Code is signed in on this Mac, so Sanchay can run on your Claude plan — no API key needed."
         />
         <div className="flex items-end justify-between gap-4 p-5 pt-3">
           <p className="max-w-xl text-[12.5px] leading-snug text-ink-3">
@@ -86,7 +86,7 @@ export function HomeAiCard(): React.JSX.Element | null {
         <CardHeader
           title={
             <span className="flex items-center gap-2">
-              <Cpu className="size-4" aria-hidden /> Use Ollama as your AI CFO
+              <Cpu className="size-4" aria-hidden /> Run Sanchay on Ollama
             </span>
           }
           description={`Ollama is running on this Mac with ${model}. Everything stays on your Mac.`}
@@ -109,7 +109,7 @@ export function HomeAiCard(): React.JSX.Element | null {
       <CardHeader
         title={
           <span className="flex items-center gap-2">
-            <Bot className="size-4" aria-hidden /> Set up your AI CFO
+            <Bot className="size-4" aria-hidden /> Set up Sanchay’s AI
           </span>
         }
         description="Claude Code isn't signed in on this Mac. Gemini has a free API key, or run a model privately with Ollama from Settings."

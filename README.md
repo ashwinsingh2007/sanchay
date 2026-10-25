@@ -24,7 +24,7 @@ _Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people
 > Sanchay gives budgeting and informational insights based on your data. It is not a SEBI-registered investment adviser, and nothing in it is investment, tax or legal advice.
 
 <p align="center">
-  <img src="docs/screenshots/today.png" alt="The Today page: a note from your CFO, this month's spending, savings and safe-to-spend, and next moves" width="900">
+  <img src="docs/screenshots/today.png" alt="The Today page: a note from Sanchay, this month's spending, savings and safe-to-spend, and next moves" width="900">
 </p>
 
 ## Demo (70 seconds)
@@ -47,20 +47,20 @@ From those it closes your month: income, spending, saving rate, what changed sin
 
 The planning pages turn that into next moves in priority order, goals, savings ideas sized from your own spending, and a financial-independence date. Each saving also shows how much sooner it gets you there.
 
-The CFO review looks at your investments: allocation against a target for your age and risk, concentration in single stocks and sectors, fund costs, and gaps in your emergency fund and insurance.
+The portfolio review looks at your investments: allocation against a target for your age and risk, concentration in single stocks and sectors, fund costs, and gaps in your emergency fund and insurance.
 
-"Ask your CFO" is a chat about your numbers. It can look up live market data and answers with tables, sources and the maths behind them.
+"Ask Sanchay" is a chat about your numbers. It can look up live market data and answers with tables, sources and the maths behind them.
 
 Sanchay can also connect read-only to INDmoney, to brokers (Zerodha, Groww, Dhan, Upstox, FYERS, Kotak Neo) and to market-data services (Tapetide, TradingView) through their official MCP servers. Any tool that could place an order or change something is blocked.
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/chat.png" alt="Ask your CFO answering where to save 5,000 rupees next month, as a table"></td>
+    <td><img src="docs/screenshots/chat.png" alt="Ask Sanchay answering where to save 5,000 rupees next month, as a table"></td>
     <td><img src="docs/screenshots/freedom.png" alt="The Freedom page with an estimated financial-independence date and the fastest ways to get there"></td>
     <td><img src="docs/screenshots/categories.png" alt="The Categories page with a spending donut, the biggest changes since last month and spending by month"></td>
   </tr>
   <tr>
-    <td align="center">Ask your CFO</td>
+    <td align="center">Ask Sanchay</td>
     <td align="center">Freedom</td>
     <td align="center">Categories</td>
   </tr>
@@ -126,7 +126,7 @@ The app is built with Electron, React 19, Tailwind v4 and SQLite (through Drizzl
 src/
   shared/            Pure TypeScript — no Electron, no Node APIs
     domain/          Statement parsing (CSV, PDF tables, CAS, payslips), dedupe, categorisation,
-                     recurring, cash flow, safe-to-spend, goals, FI, CFO review, masking (redact.ts)
+                     recurring, cash flow, safe-to-spend, goals, FI, portfolio review, masking (redact.ts)
     knowledge/       India investing playbook and savings-scheme rates the AI works from
     money.ts         Integer minor-unit money maths (no floats)
     ipc.ts           Typed API contract + Zod schemas
@@ -178,7 +178,7 @@ Before importing, every file (PDF or CSV) is checked to see whether it is a stat
 | Recurring detection      | For each merchant, take the largest group of amounts within a tolerance (15% by default). Accept it if the median gap is monthly (25 to 36 days), quarterly (80 to 100) or yearly (345 to 385), at least 60% of the gaps fit, and there are at least 3 payments (2 for yearly, capped at 60% confidence). Frequent spending that varies, such as food delivery, is rejected.                                                |
 | Goals (estimate)         | Needed per month is the remaining amount divided by the whole months left before the target date. The projected finish uses your planned monthly contribution. No returns, interest or inflation are assumed.                                                                                                                                                                                                               |
 
-### CFO actions
+### Next-move actions
 
 These come from fixed rules, not a language model. Each one shows what to do, the estimated impact, why it was suggested, the calculation, the transactions behind it, and a confidence level when it's inferred.
 

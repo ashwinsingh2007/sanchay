@@ -187,7 +187,7 @@ export const aiNotes = sqliteTable('ai_notes', {
   createdAt: text('created_at').notNull()
 })
 
-/** Categories your AI CFO decided per merchant, reused on future imports. */
+/** Categories Sanchay decided per merchant, reused on future imports. */
 export const aiCategories = sqliteTable('ai_categories', {
   key: text('key').primaryKey(),
   categoryId: text('category_id')

@@ -409,7 +409,7 @@ function AiSection(): React.JSX.Element {
       <CardHeader
         title={
           <span className="flex items-center gap-2">
-            <Bot className="size-4" aria-hidden /> AI CFO
+            <Bot className="size-4" aria-hidden /> AI
           </span>
         }
         description="Choose where your AI runs and what it knows about your goals."
@@ -419,7 +419,7 @@ function AiSection(): React.JSX.Element {
         <div>
           <Field
             label="Your goals"
-            hint="Shared with your AI CFO to prioritise advice."
+            hint="Shared with Sanchay to prioritise advice."
             htmlFor="s-goal"
           >
             <textarea

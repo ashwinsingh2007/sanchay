@@ -32,7 +32,7 @@ function html(): string {
 <body><div class="card">
   <img src="${logo}" alt="">
   <h1>Sanchay</h1>
-  <p>Your AI CFO · private by design</p>
+  <p>Your AI money manager · private by design</p>
   <div class="bar"></div>
 </div></body></html>`
 }

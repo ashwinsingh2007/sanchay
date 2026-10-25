@@ -19,7 +19,7 @@ export function SalaryCard(): React.JSX.Element {
     <Card className="mb-6">
       <CardHeader
         title="Salary"
-        description="Upload salary slips so your AI CFO knows your pay, tax and PF — read on this Mac only."
+        description="Upload salary slips so Sanchay knows your pay, tax and PF — read on this Mac only."
         action={
           <Button
             size="sm"

@@ -1,5 +1,5 @@
 /**
- * The CFO review: one deterministic read of the whole picture — what you own, what you spend,
+ * The portfolio review: one deterministic read of the whole picture — what you own, what you spend,
  * what you should keep liquid and where the risks are. The AI quotes these numbers instead of
  * re-deriving them on every answer, so advice stays consistent from one question to the next.
  *

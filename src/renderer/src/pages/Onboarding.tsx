@@ -202,7 +202,7 @@ export function Onboarding(): React.JSX.Element {
                 Step 2 · Intelligence
               </p>
               <h1 className="mt-1 font-[family-name:var(--font-display)] text-[30px] font-semibold tracking-tight">
-                Set up your AI CFO
+                Set up Sanchay’s AI
               </h1>
               <p className="mt-2 text-[15px] text-ink-2">
                 Choose where your AI runs. Claude Code is the easiest if you have a Claude plan, and
@@ -232,10 +232,10 @@ export function Onboarding(): React.JSX.Element {
                 Step 3 · Your goals
               </p>
               <h1 className="mt-1 font-[family-name:var(--font-display)] text-[30px] font-semibold tracking-tight">
-                Tell your AI CFO what matters
+                Tell Sanchay what matters
               </h1>
               <p className="mt-2 text-[15px] text-ink-2">
-                In your own words. Your CFO uses this to prioritise advice. Stays on this Mac unless
+                In your own words. Sanchay uses this to prioritise advice. Stays on this Mac unless
                 you chose a cloud AI.
               </p>
               <textarea

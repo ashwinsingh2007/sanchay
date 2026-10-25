@@ -18,12 +18,12 @@ export function recategorise(opts: { quiet?: boolean } = {}): Promise<void> {
         .getState()
         .toast(
           r.updated > 0
-            ? `Your AI CFO re-categorised ${r.updated} transaction${r.updated === 1 ? '' : 's'} across ${r.asked} merchant${r.asked === 1 ? '' : 's'}.`
+            ? `Sanchay re-categorised ${r.updated} transaction${r.updated === 1 ? '' : 's'} across ${r.asked} merchant${r.asked === 1 ? '' : 's'}.`
             : changed > 0
               ? `Re-categorised ${changed} transaction${changed === 1 ? '' : 's'}.`
               : r.aiUsed
                 ? 'Everything already looks correctly categorised.'
-                : 'Categories are up to date. Set up your AI CFO to sort the unclear ones too.'
+                : 'Categories are up to date. Set up Sanchay’s AI to sort the unclear ones too.'
         )
     })
     .catch((e: unknown) => {

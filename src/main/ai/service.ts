@@ -265,18 +265,17 @@ export function resolveProvider(db: Db): {
   baseUrl: string
 } {
   const settings = getSettings(db)
-  if (settings.aiProvider === 'none')
-    throw new Error('Set up your AI CFO first (Settings → AI CFO).')
+  if (settings.aiProvider === 'none') throw new Error('Set up Sanchay’s AI first (Settings → AI).')
   const provider = settings.aiProvider
   const meta = PROVIDER_META[provider]
   if (meta.kind === 'cloud' && !settings.cloudConsent) {
     throw new Error(
-      `Allow ${meta.name} to receive a summary of your finances in Settings → AI CFO first.`
+      `Allow ${meta.name} to receive a summary of your finances in Settings → AI first.`
     )
   }
   const needsKey = meta.kind === 'cloud' && provider !== 'claude_code'
   const apiKey = needsKey ? getSecret(db, `${provider}_api_key`) : null
-  if (needsKey && !apiKey) throw new Error(`Add your ${meta.name} API key in Settings → AI CFO.`)
+  if (needsKey && !apiKey) throw new Error(`Add your ${meta.name} API key in Settings → AI.`)
   return {
     provider,
     model: settings.aiModel ?? meta.defaultModel,

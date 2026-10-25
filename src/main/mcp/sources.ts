@@ -342,7 +342,7 @@ const redirectFor = (id: string): string => REDIRECTS[id] ?? REDIRECT_URL
 const appFetch: typeof fetch = (input, init) => {
   const headers = new Headers(init?.headers)
   if (!headers.has('user-agent'))
-    headers.set('user-agent', `PersonalAICFO/${app.getVersion()} (+MCP client)`)
+    headers.set('user-agent', `Sanchay/${app.getVersion()} (+MCP client)`)
   return fetch(input, { ...init, headers })
 }
 

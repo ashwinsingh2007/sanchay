@@ -113,7 +113,7 @@ function StepRow({ step, index }: { step: Insight; index: number }): React.JSX.E
               icon={<Sparkles className="size-3.5" />}
               onClick={() => askAi(`Walk me through this step: "${step.title}". ${step.action}`)}
             >
-              Ask AI CFO
+              Ask Sanchay
             </Button>
             <Button
               variant="ghost"

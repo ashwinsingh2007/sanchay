@@ -50,7 +50,7 @@ import { api, cn } from './lib/utils'
 
 const NAV: { page: Page; label: string; icon: ReactNode; group?: string }[] = [
   { page: 'home', label: 'Today', icon: <Sun className="size-4" /> },
-  { page: 'ai', label: 'Ask your CFO', icon: <Sparkles className="size-4" /> },
+  { page: 'ai', label: 'Ask Sanchay', icon: <Sparkles className="size-4" /> },
   { page: 'steps', label: 'Next moves', icon: <ListChecks className="size-4" />, group: 'Plan' },
   { page: 'savings', label: 'Save more', icon: <PiggyBank className="size-4" /> },
   { page: 'goals', label: 'Goals', icon: <Target className="size-4" /> },
@@ -64,7 +64,7 @@ const NAV: { page: Page; label: string; icon: ReactNode; group?: string }[] = [
     icon: <TrendingUp className="size-4" />,
     group: 'Wealth'
   },
-  { page: 'profile', label: 'CFO profile', icon: <UserRound className="size-4" />, group: 'You' },
+  { page: 'profile', label: 'Money profile', icon: <UserRound className="size-4" />, group: 'You' },
   { page: 'sources', label: 'Data sources', icon: <Plug className="size-4" /> },
   { page: 'settings', label: 'Settings', icon: <Settings className="size-4" /> }
 ]
@@ -311,7 +311,7 @@ export default function App(): React.JSX.Element {
           {!collapsed && (
             <div className="min-w-0 flex-1">
               <p className="text-[14px] font-semibold leading-tight tracking-tight">Sanchay</p>
-              <p className="text-[11px] text-white/70">Your AI CFO</p>
+              <p className="text-[11px] text-white/70">AI money manager</p>
             </div>
           )}
           <button

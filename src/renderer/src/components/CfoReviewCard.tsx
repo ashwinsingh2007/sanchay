@@ -68,13 +68,13 @@ export function CfoReviewCard(): React.JSX.Element | null {
   return (
     <Card>
       <CardHeader
-        title="CFO review"
-        description={`What your CFO sees, computed from INDmoney (${formatDate(r.asOf)}), your statements and profile. Every answer starts from these numbers.`}
+        title="Portfolio review"
+        description={`What Sanchay sees, computed from INDmoney (${formatDate(r.asOf)}), your statements and profile. Every answer starts from these numbers.`}
         action={
           <button
             onClick={() =>
               askAi(
-                'Go through my CFO review and tell me exactly what to do with my money, in priority order.',
+                'Go through my portfolio review and tell me exactly what to do with my money, in priority order.',
                 true
               )
             }

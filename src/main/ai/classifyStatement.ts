@@ -39,7 +39,7 @@ export async function aiConfirmStatement(
   return {
     isStatement: yes,
     reason: yes
-      ? 'Your AI CFO confirmed this is a statement.'
-      : `Your AI CFO says this isn’t a statement: ${m[2]!.trim().slice(0, 160)}`
+      ? 'Sanchay confirmed this is a statement.'
+      : `Sanchay says this isn’t a statement: ${m[2]!.trim().slice(0, 160)}`
   }
 }

@@ -205,7 +205,7 @@ function SuggestionStrip({
                 )
               }
             >
-              <Sparkles className="size-3" /> Ask AI CFO
+              <Sparkles className="size-3" /> Ask Sanchay
             </button>
           )}
         </div>
@@ -509,7 +509,7 @@ function SaveTab({ flow, aiBusy }: { flow: MoneyFlow; aiBusy: boolean }): React.
       {aiBusy && (
         <Card className="flex items-center gap-3 px-5 py-3 text-[13px] text-ink-2">
           <Sparkles className="size-4 animate-pulse text-ink" />
-          Your AI CFO is looking for free and cheaper options for {flow.pendingAiMerchants} more
+          Sanchay is looking for free and cheaper options for {flow.pendingAiMerchants} more
           merchant{flow.pendingAiMerchants === 1 ? '' : 's'}…
         </Card>
       )}
@@ -518,7 +518,7 @@ function SaveTab({ flow, aiBusy }: { flow: MoneyFlow; aiBusy: boolean }): React.
           <EmptyState
             icon={<Lightbulb className="size-5" />}
             title="No obvious savings this month"
-            description="Your spending doesn’t match any known cheaper or free alternatives. Ask your AI CFO for a deeper look."
+            description="Your spending doesn’t match any known cheaper or free alternatives. Ask Sanchay for a deeper look."
             action={
               <Button
                 icon={<Sparkles className="size-4" />}
@@ -528,7 +528,7 @@ function SaveTab({ flow, aiBusy }: { flow: MoneyFlow; aiBusy: boolean }): React.
                   )
                 }
               >
-                Ask AI CFO
+                Ask Sanchay
               </Button>
             }
           />
@@ -601,7 +601,7 @@ function SaveTab({ flow, aiBusy }: { flow: MoneyFlow; aiBusy: boolean }): React.
                     )
                   }
                 >
-                  Ask AI CFO
+                  Ask Sanchay
                 </Button>
               </div>
             </div>
@@ -763,7 +763,7 @@ function PaySmarterTab({ flow, month }: { flow: MoneyFlow; month: string }): Rea
             )
           }
         >
-          Ask AI CFO
+          Ask Sanchay
         </Button>
       </Card>
 
@@ -1040,7 +1040,7 @@ export function FlowPage(): React.JSX.Element {
           variant="ghost"
           icon={<Sparkles className="size-4" />}
           loading={sorting}
-          title="Re-check every category with the latest rules and your AI CFO"
+          title="Re-check every category with the latest rules and Sanchay"
           onClick={() => {
             setSorting(true)
             void recategorise().finally(() => setSorting(false))

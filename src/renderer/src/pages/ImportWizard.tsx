@@ -263,7 +263,7 @@ function CasSaved({
         <p className="mt-0.5 text-xs text-ink-3">{cas.accounts.join(' · ')}</p>
       )}
       <p className="mt-2 text-[11.5px] text-ink-3">
-        Your CFO and the Investments page now use these holdings. Upload a newer CAS each month to
+        Sanchay and the Investments page now use these holdings. Upload a newer CAS each month to
         keep them current.
       </p>
     </div>
@@ -306,7 +306,7 @@ function PayslipSaved({
           ))}
       </dl>
       <p className="mt-2 text-[11.5px] text-ink-3">
-        Your AI CFO now uses this for salary, tax and PF insights. Add more months for trends.
+        Sanchay now uses this for salary, tax and PF insights. Add more months for trends.
       </p>
     </div>
   )
@@ -1053,7 +1053,7 @@ export function ImportWizard(): React.JSX.Element {
   const description =
     stage.kind === 'pick'
       ? importKind === 'payslip'
-        ? 'Your AI CFO uses it for salary, tax and PF insights. Read on this Mac only.'
+        ? 'Sanchay uses it for salary, tax and PF insights. Read on this Mac only.'
         : 'Drop a statement from any bank or credit card — we’ll take it from there.'
       : stage.kind === 'review'
         ? 'Nothing is saved until you import.'

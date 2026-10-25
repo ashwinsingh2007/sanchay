@@ -93,7 +93,7 @@ function OpportunityCard({
               )
             }
           >
-            Ask AI CFO
+            Ask Sanchay
           </Button>
         </div>
       </div>
@@ -182,8 +182,8 @@ function LiveOffers(): React.JSX.Element {
           </div>
         ) : busy ? (
           <p className="flex items-center gap-2 py-6 text-[13px] text-ink-2">
-            <Sparkles className="size-4 animate-pulse" aria-hidden /> Your AI CFO is searching the
-            web for current offers… this can take a minute.
+            <Sparkles className="size-4 animate-pulse" aria-hidden /> Sanchay is searching the web
+            for current offers… this can take a minute.
           </p>
         ) : r.offers.length === 0 ? (
           <p className="py-4 text-[13px] text-ink-3">
@@ -325,7 +325,7 @@ export function SavingsPage(): React.JSX.Element {
           }
           className="mt-5 flex items-center gap-1.5 rounded-md bg-white px-3.5 py-1.5 text-[12.5px] font-semibold text-black hover:bg-neutral-200"
         >
-          <Sparkles className="size-3.5" aria-hidden /> Ask AI CFO to find more
+          <Sparkles className="size-3.5" aria-hidden /> Ask Sanchay to find more
         </button>
       </div>
 
@@ -344,7 +344,7 @@ export function SavingsPage(): React.JSX.Element {
 
           <Section
             title="Live offers & coupons"
-            description="Current deals at the places you spend most, found by your AI CFO."
+            description="Current deals at the places you spend most, found by Sanchay."
           >
             <LiveOffers />
           </Section>
