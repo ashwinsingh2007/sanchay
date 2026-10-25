@@ -53,7 +53,7 @@ Write the subject in the imperative ("Add Kotak credit card parser", not "Added.
 
 ## Licence
 
-Sanchay is licensed under the [GNU AGPL-3.0](LICENSE). By opening a pull request you agree that your contribution is released under the same licence. There is no contributor licence agreement to sign.
+Sanchay is licensed under the [MIT License](LICENSE). By opening a pull request you agree that your contribution is released under the same licence. There is no contributor licence agreement to sign.
 
 ## Code of conduct
 

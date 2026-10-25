@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/ashwinsingh2007/sanchay/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ashwinsingh2007/sanchay/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="LICENSE"><img alt="License: AGPL-3.0" src="https://img.shields.io/badge/license-AGPL--3.0-0f766e"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-0f766e"></a>
   <img alt="Platform: macOS" src="https://img.shields.io/badge/platform-macOS-111">
   <img alt="Status: early" src="https://img.shields.io/badge/status-early%20preview-f4aa1c">
   <a href="https://github.com/ashwinsingh2007/sanchay/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/ashwinsingh2007/sanchay?color=0f766e"></a>
@@ -221,6 +221,6 @@ Sanchay is built and maintained by [Ashwani Kumar](https://github.com/ashwinsing
 
 ## License
 
-Sanchay is licensed under the [GNU AGPL-3.0](LICENSE). You can use, study, change and share it. If you distribute it, or run a modified version as a service for other people, you have to publish your source under the same licence.
+Sanchay is licensed under the [MIT License](LICENSE). You can use, copy, change and share it, including in commercial projects. Keep the copyright notice and licence text with any copy you share.
 
 Parts of the CAS parser are adapted from [casparser](https://github.com/codereverser/casparser) (MIT).
