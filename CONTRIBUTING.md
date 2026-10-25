@@ -20,7 +20,7 @@ Sanchay handles bank statements, salaries and portfolios, so please be careful w
 You need macOS, Node.js 22 or later and npm.
 
 ```bash
-git clone https://github.com/sanchayhq/sanchay.git
+git clone https://github.com/ashwinsingh2007/sanchay.git
 cd sanchay
 npm install
 npm run dev

@@ -4,7 +4,7 @@ Sanchay stores people's financial data, so security reports get priority.
 
 ## Reporting a vulnerability
 
-Please don't open a public issue for a security problem. Report it privately through GitHub: open the [Security tab](https://github.com/sanchayhq/sanchay/security) of this repository and choose "Report a vulnerability". Only the maintainers can see the report.
+Please don't open a public issue for a security problem. Report it privately through GitHub: open the [Security tab](https://github.com/ashwinsingh2007/sanchay/security) of this repository and choose "Report a vulnerability". Only the maintainers can see the report.
 
 Include what you found, the steps to reproduce it, and what an attacker could do with it. Don't include anyone's real financial data.
 

@@ -8,9 +8,9 @@
   "license": "AGPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sanchayhq/sanchay.git"
+    "url": "https://github.com/ashwinsingh2007/sanchay.git"
   },
-  "homepage": "https://github.com/sanchayhq/sanchay",
+  "homepage": "https://github.com/ashwinsingh2007/sanchay",
   "private": true,
   "scripts": {
     "dev": "electron-vite dev",

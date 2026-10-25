@@ -7,16 +7,16 @@
 <p align="center">An open-source personal finance app and AI CFO for your Mac. Import your bank statements, track your expenses, and get a money plan built from your own numbers. Your data stays on your Mac.</p>
 
 <p align="center">
-  <a href="https://github.com/sanchayhq/sanchay/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/sanchayhq/sanchay/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/ashwinsingh2007/sanchay/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ashwinsingh2007/sanchay/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: AGPL-3.0" src="https://img.shields.io/badge/license-AGPL--3.0-0f766e"></a>
   <img alt="Platform: macOS" src="https://img.shields.io/badge/platform-macOS-111">
   <img alt="Status: early" src="https://img.shields.io/badge/status-early%20preview-f4aa1c">
-  <a href="https://github.com/sanchayhq/sanchay/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/sanchayhq/sanchay?color=0f766e"></a>
-  <a href="https://github.com/sanchayhq/sanchay/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/sanchayhq/sanchay?style=flat&color=f4aa1c"></a>
+  <a href="https://github.com/ashwinsingh2007/sanchay/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/ashwinsingh2007/sanchay?color=0f766e"></a>
+  <a href="https://github.com/ashwinsingh2007/sanchay/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ashwinsingh2007/sanchay?style=flat&color=f4aa1c"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/sanchayhq/sanchay/releases/latest"><b>Download for Mac</b></a> · <a href="https://sanchayhq.github.io">Website</a> · <a href="#demo-70-seconds">Watch the demo</a> · <a href="CONTRIBUTING.md">Contribute</a>
+  <a href="https://github.com/ashwinsingh2007/sanchay/releases/latest"><b>Download for Mac</b></a> · <a href="https://sanchayhq.github.io">Website</a> · <a href="#demo-70-seconds">Watch the demo</a> · <a href="CONTRIBUTING.md">Contribute</a>
 </p>
 
 _Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people in India who want to see where their money goes and what to do next, without giving their bank login to anyone. It does the job of an expense tracker and a budgeting app, and adds an AI that plans with your real numbers.
@@ -85,7 +85,7 @@ The app window can't reach the internet. It cancels every request except those f
 
 ## Download
 
-Get the latest `.dmg` from [Releases](https://github.com/sanchayhq/sanchay/releases), open it and drag Sanchay to Applications. It runs on Macs with Apple silicon (M1 or later), and it's signed and notarized by Apple, so it opens without warnings.
+Get the latest `.dmg` from [Releases](https://github.com/ashwinsingh2007/sanchay/releases), open it and drag Sanchay to Applications. It runs on Macs with Apple silicon (M1 or later), and it's signed and notarized by Apple, so it opens without warnings.
 
 ## Quick start
 
@@ -94,7 +94,7 @@ To run it from source instead:
 You need macOS, Node.js 22 or later (tested on 24) and npm.
 
 ```bash
-git clone https://github.com/sanchayhq/sanchay.git
+git clone https://github.com/ashwinsingh2007/sanchay.git
 cd sanchay
 npm install          # also rebuilds better-sqlite3 for Electron
 npm run dev          # launches the app with hot reload
