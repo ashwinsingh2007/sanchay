@@ -21,6 +21,12 @@ _Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people
   <img src="docs/screenshots/today.png" alt="The Today page: a note from your CFO, this month's spending, savings and safe-to-spend, and next moves" width="900">
 </p>
 
+<p align="center">
+  Demo video, 70 seconds: <a href="https://github.com/sanchayhq/sanchay/releases/download/v0.1.0/sanchay-demo-india.mp4">India (₹)</a> · <a href="https://github.com/sanchayhq/sanchay/releases/download/v0.1.0/sanchay-demo-us-dollars.mp4">United States ($)</a>
+</p>
+
+Sanchay is built for India first. If you pick another country during setup, it switches the currency, hides the India-only connections and adjusts the advice. The US is the first country it supports this way.
+
 ## What it does
 
 Sanchay reads bank and credit-card statements (PDF or CSV, including password-protected PDFs), payslips, and consolidated account statements from CAMS, KFintech, NSDL and CDSL. It works out the columns, date format and signs on its own, and merges duplicates when statements overlap.
