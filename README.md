@@ -21,9 +21,13 @@ _Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people
   <img src="docs/screenshots/today.png" alt="The Today page: a note from your CFO, this month's spending, savings and safe-to-spend, and next moves" width="900">
 </p>
 
-<p align="center">
-  Demo video, 70 seconds: <a href="https://github.com/sanchayhq/sanchay/releases/download/v0.1.0/sanchay-demo-india.mp4">India (₹)</a> · <a href="https://github.com/sanchayhq/sanchay/releases/download/v0.1.0/sanchay-demo-us-dollars.mp4">United States ($)</a>
-</p>
+### Demo (70 seconds)
+
+https://github.com/user-attachments/assets/587d5f7c-35f8-4793-9dd5-64c26d97c6b1
+
+The same tour set to the United States, in dollars:
+
+https://github.com/user-attachments/assets/e0208d22-14f7-414b-9c45-72190cdfb841
 
 Sanchay is built for India first. If you pick another country during setup, it switches the currency, hides the India-only connections and adjusts the advice. The US is the first country it supports this way.
 
