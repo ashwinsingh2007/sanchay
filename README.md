@@ -217,7 +217,7 @@ Supported date formats include `2026-09-01`, `01/09/2026`, `09/01/2026`, `01-Sep
 
 ## Contributing
 
-Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to set up, which checks to run and how to keep personal data out of reports. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security problems privately as described in [SECURITY.md](SECURITY.md).
+Sanchay is built and maintained by [Ashwani Kumar](https://github.com/ashwinsingh2007). Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to set up, which checks to run and how to keep personal data out of reports. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security problems privately as described in [SECURITY.md](SECURITY.md).
 
 ## License
 
