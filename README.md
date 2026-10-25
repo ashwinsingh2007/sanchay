@@ -4,16 +4,22 @@
 
 <h1 align="center">Sanchay</h1>
 
-<p align="center">A private AI CFO for your Mac. Upload your statements, connect your portfolio, and get a money plan built from your own numbers.</p>
+<p align="center">An open-source personal finance app and AI CFO for your Mac. Import your bank statements, track your expenses, and get a money plan built from your own numbers. Your data stays on your Mac.</p>
 
 <p align="center">
   <a href="https://github.com/sanchayhq/sanchay/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/sanchayhq/sanchay/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: AGPL-3.0" src="https://img.shields.io/badge/license-AGPL--3.0-0f766e"></a>
   <img alt="Platform: macOS" src="https://img.shields.io/badge/platform-macOS-111">
   <img alt="Status: early" src="https://img.shields.io/badge/status-early%20preview-f4aa1c">
+  <a href="https://github.com/sanchayhq/sanchay/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/sanchayhq/sanchay?color=0f766e"></a>
+  <a href="https://github.com/sanchayhq/sanchay/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/sanchayhq/sanchay?style=flat&color=f4aa1c"></a>
 </p>
 
-_Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people in India who want to see where their money goes and what to do next, without giving their bank login to anyone.
+<p align="center">
+  <a href="https://github.com/sanchayhq/sanchay/releases/latest"><b>Download for Mac</b></a> · <a href="https://sanchayhq.github.io">Website</a> · <a href="#demo-70-seconds">Watch the demo</a> · <a href="CONTRIBUTING.md">Contribute</a>
+</p>
+
+_Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people in India who want to see where their money goes and what to do next, without giving their bank login to anyone. It does the job of an expense tracker and a budgeting app, and adds an AI that plans with your real numbers.
 
 > Sanchay gives budgeting and informational insights based on your data. It is not a SEBI-registered investment adviser, and nothing in it is investment, tax or legal advice.
 
@@ -21,7 +27,7 @@ _Sanchay_ (संचय) is Hindi for "saving up". It's a desktop app for people
   <img src="docs/screenshots/today.png" alt="The Today page: a note from your CFO, this month's spending, savings and safe-to-spend, and next moves" width="900">
 </p>
 
-### Demo (70 seconds)
+## Demo (70 seconds)
 
 https://github.com/user-attachments/assets/587d5f7c-35f8-4793-9dd5-64c26d97c6b1
 
@@ -30,6 +36,8 @@ The same tour set to the United States, in dollars:
 https://github.com/user-attachments/assets/e0208d22-14f7-414b-9c45-72190cdfb841
 
 Sanchay is built for India first. If you pick another country during setup, it switches the currency, hides the India-only connections and adjusts the advice. The US is the first country it supports this way.
+
+If you have used Walnut, Money Manager, YNAB or Mint, Sanchay covers the same spending tracking and budgets. The differences are that it reads the statements you already get instead of asking for your bank login, it keeps everything in a file on your Mac, it's free and open source, and it comes with an AI you can ask about your money.
 
 ## What it does
 
