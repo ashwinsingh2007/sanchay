@@ -11,6 +11,7 @@ import {
   Upload
 } from 'lucide-react'
 import { formatDate } from '@shared/dates'
+import { isIndia } from '@shared/region'
 import type { DataSourceAuth, DataSourceInfo } from '@shared/types'
 import {
   Badge,
@@ -23,13 +24,15 @@ import {
   Segmented,
   Spinner
 } from '../components/ui'
-import { useMutation, useQuery } from '../lib/hooks'
+import { useCurrency, useMutation, useQuery } from '../lib/hooks'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
 
 /** MCP servers the AI CFO can read from while you chat. */
 export function DataSourcesPage(): React.JSX.Element {
   const sources = useQuery(() => api.listDataSources(true))
+  const india = isIndia(useCurrency())
+  const brokers = sources.data?.filter((s) => s.group === 'broker') ?? []
   return (
     <div className="space-y-5">
       <PageHeader
@@ -41,7 +44,14 @@ export function DataSourcesPage(): React.JSX.Element {
         <Spinner label="Checking your data sources" />
       ) : (
         <div className="space-y-8">
-          <Group title="Your money" note="Statements, INDmoney and soon your inbox.">
+          <Group
+            title="Your money"
+            note={
+              india
+                ? 'Statements, INDmoney and soon your inbox.'
+                : 'Statements and soon your inbox.'
+            }
+          >
             <StatementsCard />
             {sources.data
               .filter((s) => s.group === 'money')
@@ -50,19 +60,19 @@ export function DataSourcesPage(): React.JSX.Element {
               ))}
             <ComingSoonCard
               title="Gmail"
-              about="Finds bank, card and CAS statements in your inbox, unlocks them and imports them automatically — read-only, and only those emails."
+              about={`Finds ${india ? 'bank, card and CAS' : 'bank and card'} statements in your inbox, unlocks them and imports them automatically — read-only, and only those emails.`}
             />
           </Group>
-          <Group
-            title="Brokers"
-            note="Official connectors. Your CFO can only read — orders, exits and conversions are blocked."
-          >
-            {sources.data
-              .filter((s) => s.group === 'broker')
-              .map((s) => (
+          {brokers.length > 0 && (
+            <Group
+              title="Brokers"
+              note="Official connectors. Your CFO can only read — orders, exits and conversions are blocked."
+            >
+              {brokers.map((s) => (
                 <SourceCard key={s.id} source={s} />
               ))}
-          </Group>
+            </Group>
+          )}
           <Group title="Market research" note="Live prices, fundamentals and news for your CFO.">
             {sources.data
               .filter((s) => s.group === 'market')

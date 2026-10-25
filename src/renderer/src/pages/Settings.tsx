@@ -10,7 +10,8 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { formatDate } from '@shared/dates'
-import { CURRENCIES, minorToInputValue, parseMoneyInput } from '@shared/money'
+import { minorToInputValue, parseMoneyInput } from '@shared/money'
+import { COUNTRIES } from '@shared/region'
 import {
   Badge,
   Button,
@@ -74,14 +75,14 @@ function PlanningSettings(): React.JSX.Element {
         }}
       >
         <Field
-          label="Primary currency"
-          hint="Applies to new accounts. Existing amounts are not converted."
+          label="Country"
+          hint="Sets your currency and which banks, brokers and tips you see. Existing amounts are not converted."
           htmlFor="s-cur"
         >
           <Select id="s-cur" value={currency} onChange={(e) => setCurrency(e.target.value)}>
-            {CURRENCIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.code} — {c.name}
+            {COUNTRIES.map((c) => (
+              <option key={c.code} value={c.currency}>
+                {c.name} ({c.currency})
               </option>
             ))}
           </Select>

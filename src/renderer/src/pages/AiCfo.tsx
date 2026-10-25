@@ -14,21 +14,33 @@ import {
   X
 } from 'lucide-react'
 import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react'
+import { formatMoney } from '@shared/money'
+import { isIndia } from '@shared/region'
 import type { AiStatus, ChatMessage, Conversation } from '@shared/types'
 import { AiSetup } from '../components/AiSetup'
 import { VoiceButton } from '../components/VoiceButton'
 import { Button, Card, Spinner } from '../components/ui'
+import { useCurrency } from '../lib/hooks'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
 
-const SUGGESTIONS = [
-  'Review my portfolio — what should I change?',
-  'Where should I put the idle cash in my savings account?',
-  'Where can I save ₹5,000 next month?',
-  'Which of my mutual funds are underperforming?',
-  'Am I adequately insured for my family?',
-  'Am I on track for my goals?'
-]
+const SUGGESTIONS = {
+  india: [
+    'Review my portfolio — what should I change?',
+    'Where should I put the idle cash in my savings account?',
+    'Where can I save ₹5,000 next month?',
+    'Which of my mutual funds are underperforming?',
+    'Am I adequately insured for my family?',
+    'Am I on track for my goals?'
+  ],
+  global: [
+    'Which subscriptions should I cut?',
+    'Where can I save $300 next month?',
+    'How big should my emergency fund be?',
+    'Why did I spend more last month?',
+    'Am I on track for my goals?'
+  ]
+}
 
 /** Renders **bold**, `code` and line breaks safely (no HTML injection). */
 function inline(text: string): ReactNode[] {
@@ -413,6 +425,8 @@ function ChatPanel({
 
 export function AiCfoPage(): React.JSX.Element {
   const toast = useUi((s) => s.toast)
+  const currency = useCurrency()
+  const india = isIndia(currency)
   const draft = useUi((s) => s.aiDraft)
   const [status, setStatus] = useState<AiStatus | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -656,12 +670,17 @@ export function AiCfoPage(): React.JSX.Element {
               What&apos;s on your mind?
             </h1>
             <p className="mx-auto mt-1.5 max-w-[480px] text-center text-[14px] text-ink-3">
-              I know your statements, INDmoney portfolio and profile, and I can look up live prices.
+              {india
+                ? 'I know your statements, INDmoney portfolio and profile, and I can look up live prices.'
+                : 'I know your statements, your goals and what you have told me.'}{' '}
               Type or tap the mic.
             </p>
             <div className="mt-7">{composer}</div>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {SUGGESTIONS.map((q) => (
+              {(india
+                ? SUGGESTIONS.india
+                : SUGGESTIONS.global.map((q) => q.replace('$300', formatMoney(30_000, currency)))
+              ).map((q) => (
                 <button
                   key={q}
                   onClick={() => void send(q)}
@@ -693,7 +712,8 @@ export function AiCfoPage(): React.JSX.Element {
             <div className="mx-auto max-w-[1180px]">
               {composer}
               <p className="mt-2 text-center text-[11px] text-ink-3">
-                AI can make mistakes — check the numbers. Not SEBI-registered investment advice.
+                AI can make mistakes — check the numbers.{' '}
+                {india ? 'Not SEBI-registered investment advice.' : 'Not investment advice.'}
               </p>
             </div>
           </div>

@@ -13,11 +13,11 @@ import { generateSampleStatements } from './sampleData'
 import type { RecurringCommitment, Transaction } from './types'
 
 /** Runs the sample statements through the same pure pipeline the importer uses. */
-function pipeline(endDate: string) {
+function pipeline(endDate: string, region: 'IN' | 'US' = 'IN') {
   const kinds = kindMap(SEED_CATEGORIES)
   const categoriser = new Categoriser([])
   const txs: Transaction[] = []
-  const statements = generateSampleStatements(endDate)
+  const statements = generateSampleStatements(endDate, 42, region)
   let balance: number | null = null
   statements.forEach((st, si) => {
     const rows = parse(st.csv, {
@@ -222,5 +222,20 @@ describe('sample data story', () => {
     expect(ctx).toContain('## Spending by category')
     expect(ctx).toContain('Save for a trip')
     expect(ctx).not.toMatch(/UPI\/|NEFT|@okbank|\d{9,}/)
+  })
+})
+
+describe('US sample data', () => {
+  const { txs } = pipeline('2026-10-03', 'US')
+
+  it('reads American statements and categorises almost everything confidently', () => {
+    const review = txs.filter((t) => !t.isTransfer && t.categoryConfidence < NEEDS_REVIEW_THRESHOLD)
+    expect([...new Set(review.map((t) => t.merchantNormalised))].sort()).toEqual([
+      'Interest',
+      'Venmo Jordan M Shared',
+      'Zelle Brightside Studio Design'
+    ])
+    expect(txs.filter((t) => t.isTransfer).length).toBeGreaterThanOrEqual(8)
+    expect(txs.some((t) => t.merchantNormalised === 'Swiggy')).toBe(false)
   })
 })

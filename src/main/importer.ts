@@ -9,6 +9,7 @@ import { matchDuplicates } from '../shared/domain/dedupe'
 import { descriptionKey } from '../shared/domain/merchant'
 import { currencyInfo } from '../shared/money'
 import { generateSampleStatements } from '../shared/sampleData'
+import { isIndia } from '../shared/region'
 import type { importCommitSchema } from '../shared/ipc'
 import type { Account, ImportSummary, QuickImportResult, Transaction } from '../shared/types'
 import { parseCsvText } from './csv'
@@ -220,7 +221,8 @@ export function loadSampleData(db: Db): ImportSummary[] {
 
   const today = todayISO()
   const summaries: ImportSummary[] = []
-  for (const statement of generateSampleStatements(today)) {
+  const region = isIndia(getSettings(db).primaryCurrency) ? 'IN' : 'US'
+  for (const statement of generateSampleStatements(today, 42, region)) {
     const parsed = parseCsvText(statement.filename, statement.csv)
     const mapping = {
       ...suggestMapping(parsed.rows, parsed.suggestedHeaderRow),

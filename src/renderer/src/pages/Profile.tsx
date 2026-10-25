@@ -7,9 +7,10 @@ import {
   SKIPPED,
   type ProfileQuestion
 } from '@shared/domain/profile'
+import { isIndia } from '@shared/region'
 import type { ProfileEntry } from '@shared/types'
 import { Badge, Button, Card, CardHeader, PageHeader, Progress, Spinner } from '../components/ui'
-import { useQuery } from '../lib/hooks'
+import { useCurrency, useQuery } from '../lib/hooks'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
 
@@ -17,6 +18,7 @@ const SECTIONS = ['You', 'Debt', 'Protection', 'Assets', 'Plans'] as const
 
 /** What your AI CFO should know beyond statements. Every question is optional. */
 export function ProfilePage(): React.JSX.Element {
+  const india = isIndia(useCurrency())
   const profile = useQuery(() => api.listProfile())
   const [entries, setEntries] = useState<ProfileEntry[] | null>(null)
   useEffect(() => {
@@ -72,7 +74,8 @@ export function ProfilePage(): React.JSX.Element {
         <ul className="divide-y divide-line px-5 pb-3">
           {notes.length === 0 && (
             <li className="py-3 text-[13px] text-ink-3">
-              Nothing yet. Try telling the AI CFO “I have a ₹20L home loan at 8.6%”.
+              Nothing yet. Try telling the AI CFO “I have a{' '}
+              {india ? '₹20L home loan at 8.6%' : '$350,000 mortgage at 6.5%'}”.
             </li>
           )}
           {notes.map((n) => (

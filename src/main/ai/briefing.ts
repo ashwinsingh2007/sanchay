@@ -133,7 +133,7 @@ export async function getBriefing(db: Db, refresh = false): Promise<Briefing | n
   }
   // Guard: if the model introduced money figures that aren't in the facts, use the rule-based text.
   const allowed = new Set((facts.match(/[\d,]+/g) ?? []).map((n) => n.replace(/,/g, '')))
-  const used = (text.match(/₹\s?[\d,]+/g) ?? []).map((n) => n.replace(/[₹,\s]/g, ''))
+  const used = (text.match(/[₹$€£¥]\s?[\d,]+/g) ?? []).map((n) => n.replace(/[₹$€£¥,\s]/g, ''))
   if (used.some((n) => !allowed.has(n))) text = ''
   const content = text.trim() || fallback(fi)
   const createdAt = new Date().toISOString()

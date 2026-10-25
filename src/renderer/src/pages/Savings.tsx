@@ -14,6 +14,7 @@ import {
 import { useState, type ReactNode } from 'react'
 import { formatDate, monthLabel } from '@shared/dates'
 import { monthsToTarget } from '@shared/domain/fi'
+import { isIndia } from '@shared/region'
 import type { FiProjection, OffersResult, SavingsKind, SavingsOpportunity } from '@shared/types'
 import { ConfidenceBadge, EvidencePanel } from '../components/finance'
 import {
@@ -26,7 +27,7 @@ import {
   ErrorState,
   Spinner
 } from '../components/ui'
-import { useMoney, useQuery } from '../lib/hooks'
+import { useCurrency, useMoney, useQuery } from '../lib/hooks'
 import { NoDataState } from '../lib/report'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
@@ -245,6 +246,7 @@ function LiveOffers(): React.JSX.Element {
 }
 
 export function SavingsPage(): React.JSX.Element {
+  const india = isIndia(useCurrency())
   const money = useMoney()
   const month = useUi((s) => s.month)
   const settings = useUi((s) => s.settings)
@@ -387,54 +389,56 @@ export function SavingsPage(): React.JSX.Element {
         </div>
 
         <div className="space-y-4">
-          <Card>
-            <CardHeader
-              title={
-                <span className="flex items-center gap-2">
-                  <CreditCard className="size-4" aria-hidden /> Rewards on your spending
-                </span>
-              }
-              description="What popular cards might earn on your actual spending mix"
-            />
-            <ul className="mt-3 divide-y divide-line px-5">
-              {data.cards.slice(0, 5).map((c) => (
-                <li key={c.cardId} className="py-3">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="flex h-7 w-11 shrink-0 items-center justify-center rounded-md bg-ink text-[10px] font-bold text-surface"
-                      aria-hidden
-                    >
-                      {c.issuer.split(' ')[0]?.slice(0, 4).toUpperCase()}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13px] font-semibold">
-                        {c.issuer} {c.name}
+          {(data.cards.length > 0 || india) && (
+            <Card>
+              <CardHeader
+                title={
+                  <span className="flex items-center gap-2">
+                    <CreditCard className="size-4" aria-hidden /> Rewards on your spending
+                  </span>
+                }
+                description="What popular cards might earn on your actual spending mix"
+              />
+              <ul className="mt-3 divide-y divide-line px-5">
+                {data.cards.slice(0, 5).map((c) => (
+                  <li key={c.cardId} className="py-3">
+                    <div className="flex items-center gap-3">
+                      <span
+                        className="flex h-7 w-11 shrink-0 items-center justify-center rounded-md bg-ink text-[10px] font-bold text-surface"
+                        aria-hidden
+                      >
+                        {c.issuer.split(' ')[0]?.slice(0, 4).toUpperCase()}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[13px] font-semibold">
+                          {c.issuer} {c.name}
+                        </p>
+                        <p className="truncate text-[11.5px] text-ink-3">{c.bestFor.join(' · ')}</p>
+                      </div>
+                      <p
+                        className={cn(
+                          'num text-[13px] font-semibold',
+                          c.netMonthlyGainMinor > 0 ? 'text-positive' : 'text-ink-3'
+                        )}
+                      >
+                        {c.netMonthlyGainMinor > 0 ? '+' : ''}
+                        {money(c.netMonthlyGainMinor)}
                       </p>
-                      <p className="truncate text-[11.5px] text-ink-3">{c.bestFor.join(' · ')}</p>
                     </div>
-                    <p
-                      className={cn(
-                        'num text-[13px] font-semibold',
-                        c.netMonthlyGainMinor > 0 ? 'text-positive' : 'text-ink-3'
-                      )}
-                    >
-                      {c.netMonthlyGainMinor > 0 ? '+' : ''}
-                      {money(c.netMonthlyGainMinor)}
-                    </p>
-                  </div>
-                </li>
-              ))}
-              {data.cards.length === 0 && (
-                <li className="py-4 text-[13px] text-ink-3">{data.cardsNote}</li>
+                  </li>
+                ))}
+                {data.cards.length === 0 && (
+                  <li className="py-4 text-[13px] text-ink-3">{data.cardsNote}</li>
+                )}
+              </ul>
+              {data.cards.length > 0 && (
+                <p className="px-5 pb-4 pt-1 text-[11px] leading-relaxed text-ink-3">
+                  {data.cardsNote} Net vs a typical 1% card after fees. Informational only — not a
+                  recommendation to apply for credit.
+                </p>
               )}
-            </ul>
-            {data.cards.length > 0 && (
-              <p className="px-5 pb-4 pt-1 text-[11px] leading-relaxed text-ink-3">
-                {data.cardsNote} Net vs a typical 1% card after fees. Informational only — not a
-                recommendation to apply for credit.
-              </p>
-            )}
-          </Card>
+            </Card>
+          )}
           <Card className="p-5">
             <p className="text-[13px] font-semibold">How these are estimated</p>
             <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-ink-2">

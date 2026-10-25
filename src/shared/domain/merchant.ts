@@ -10,6 +10,7 @@ const NOISE_WORDS = new Set([
   'IMPS',
   'RTGS',
   'ACH',
+  'PPD',
   'NACH',
   'ECS',
   'BIL',

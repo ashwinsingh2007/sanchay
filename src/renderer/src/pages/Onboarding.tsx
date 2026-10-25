@@ -10,7 +10,8 @@ import {
   TrendingUp
 } from 'lucide-react'
 import { useState } from 'react'
-import { Button, Disclaimer } from '../components/ui'
+import { COUNTRIES, isIndia } from '@shared/region'
+import { Button, Disclaimer, Field, Select } from '../components/ui'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
 import { CsvDropzone } from './ImportWizard'
@@ -61,7 +62,31 @@ function Steps({ step }: { step: number }): React.JSX.Element {
 }
 
 /** Illustrative preview of what the app produces. Clearly labelled as an example. */
-function PreviewPanel(): React.JSX.Element {
+const PREVIEW = {
+  india: {
+    saved: '₹63,629',
+    invested: '₹15,000',
+    rows: [
+      ['Dining & Delivery', '+₹4,790'],
+      ['One-off: Health insurance', '+₹18,500'],
+      ['Shopping', '+₹3,850']
+    ],
+    safe: '₹20,972/day'
+  },
+  global: {
+    saved: '$2,480',
+    invested: '$1,000',
+    rows: [
+      ['Dining & Delivery', '+$210'],
+      ['One-off: Car insurance', '+$780'],
+      ['Shopping', '+$145']
+    ],
+    safe: '$96/day'
+  }
+}
+
+function PreviewPanel({ india }: { india: boolean }): React.JSX.Element {
+  const p = india ? PREVIEW.india : PREVIEW.global
   return (
     <div className="relative hidden h-full flex-col justify-center overflow-hidden gloss px-12 text-white lg:flex">
       <div className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-white/10" />
@@ -70,14 +95,10 @@ function PreviewPanel(): React.JSX.Element {
         <p className="mb-3 text-xs font-medium eyebrow text-white/70">Example monthly close</p>
         <div className="rounded-2xl bg-surface p-5 text-ink shadow-2xl ring-1 ring-white/10">
           <p className="text-[13px] text-ink-2">Your September close</p>
-          <p className="mt-1 text-[22px] font-semibold tracking-tight">You saved ₹63,629</p>
-          <p className="text-xs text-ink-3">Saving rate 34% · ₹15,000 moved to investments</p>
+          <p className="mt-1 text-[22px] font-semibold tracking-tight">You saved {p.saved}</p>
+          <p className="text-xs text-ink-3">Saving rate 34% · {p.invested} moved to investments</p>
           <div className="mt-4 space-y-2 border-t border-line pt-3 text-[13px]">
-            {[
-              ['Dining & Delivery', '+₹4,790'],
-              ['One-off: Health insurance', '+₹18,500'],
-              ['Shopping', '+₹3,850']
-            ].map(([label, value]) => (
+            {p.rows.map(([label, value]) => (
               <div key={label} className="flex justify-between">
                 <span className="text-ink-2">{label}</span>
                 <span className="num font-medium">{value}</span>
@@ -90,7 +111,7 @@ function PreviewPanel(): React.JSX.Element {
             <TrendingUp className="size-4" />
           </span>
           <div>
-            <p className="text-[13px] font-semibold">Safe to spend: ₹20,972/day</p>
+            <p className="text-[13px] font-semibold">Safe to spend: {p.safe}</p>
             <p className="text-xs text-white/75">until your next salary, after bills and buffer</p>
           </div>
         </div>
@@ -102,23 +123,39 @@ function PreviewPanel(): React.JSX.Element {
   )
 }
 
-const GOAL_TEMPLATES = [
-  'Become financially independent by 45 — work becomes optional.',
-  'Retire early and live off my investments.',
-  'Build an emergency fund covering 6 months of expenses within a year.',
-  'Save ₹10 lakh for a home down payment in 3 years.',
-  'Cut food delivery spending in half.',
-  'Save 30% of my salary every month.',
-  'Pay off my car loan early.',
-  'Plan a ₹2 lakh holiday next summer without touching savings.',
-  'Stop running out of money before payday.'
-]
+function goalTemplates(india: boolean): string[] {
+  return [
+    'Become financially independent by 45 — work becomes optional.',
+    'Retire early and live off my investments.',
+    'Build an emergency fund covering 6 months of expenses within a year.',
+    india
+      ? 'Save ₹10 lakh for a home down payment in 3 years.'
+      : 'Save $60,000 for a home down payment in 3 years.',
+    'Cut food delivery spending in half.',
+    'Save 30% of my salary every month.',
+    'Pay off my car loan early.',
+    india
+      ? 'Plan a ₹2 lakh holiday next summer without touching savings.'
+      : 'Plan a $3,000 vacation next summer without touching savings.',
+    'Stop running out of money before payday.'
+  ]
+}
 
 export function Onboarding(): React.JSX.Element {
   const { openImport, go, setMonth, toast, bump, settings, setSettings } = useUi()
   const [step, setStep] = useState(0)
   const [busy, setBusy] = useState(false)
   const [goal, setGoal] = useState(settings?.goalText ?? '')
+  const currency = settings?.primaryCurrency ?? 'INR'
+  const india = isIndia(currency)
+
+  async function setCountry(next: string): Promise<void> {
+    try {
+      setSettings(await api.updateSettings({ primaryCurrency: next }))
+    } catch (e) {
+      toast(e instanceof Error ? e.message : String(e), 'error')
+    }
+  }
 
   async function saveGoal(skip: boolean): Promise<void> {
     try {
@@ -212,7 +249,7 @@ export function Onboarding(): React.JSX.Element {
               />
               <p className="mt-3 text-[12px] font-medium text-ink-3">Or start from a template</p>
               <div className="mt-2 flex flex-wrap gap-2">
-                {GOAL_TEMPLATES.map((t) => (
+                {goalTemplates(india).map((t) => (
                   <button
                     key={t}
                     onClick={() => setGoal((g) => (g.trim() ? `${g.trim()}\n${t}` : t))}
@@ -275,7 +312,26 @@ export function Onboarding(): React.JSX.Element {
                   </li>
                 ))}
               </ul>
-              <div className="mt-10 flex items-center gap-4">
+              <div className="mt-8 max-w-[300px]">
+                <Field
+                  label="Where do you live?"
+                  hint="Sets your currency and the banks and apps you see."
+                  htmlFor="ob-country"
+                >
+                  <Select
+                    id="ob-country"
+                    value={currency}
+                    onChange={(e) => void setCountry(e.target.value)}
+                  >
+                    {COUNTRIES.map((c) => (
+                      <option key={c.code} value={c.currency}>
+                        {c.name} ({c.currency})
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+              </div>
+              <div className="mt-8 flex items-center gap-4">
                 <Button
                   variant="primary"
                   size="lg"
@@ -332,7 +388,7 @@ export function Onboarding(): React.JSX.Element {
 
         <Disclaimer className="no-drag max-w-[520px]" />
       </div>
-      <PreviewPanel />
+      <PreviewPanel india={india} />
     </div>
   )
 }

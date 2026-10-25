@@ -2,14 +2,14 @@ import { useMemo, useState } from 'react'
 import { ArrowUp, Check, ChevronRight, RefreshCw, Sparkles } from 'lucide-react'
 import { formatDate, monthLabel, todayISO } from '@shared/dates'
 import { isAnswered, PROFILE_QUESTIONS } from '@shared/domain/profile'
-import { formatMoney } from '@shared/money'
+import { currencyInfo, formatMoney } from '@shared/money'
 import type { IndmoneySnapshot, Insight, MonthlyCloseReport } from '@shared/types'
 import { Sparkline } from '../components/homeCharts'
 import { HomeAiCard } from '../components/HomeAiCard'
 import { HomeSetup } from '../components/HomeSetup'
 import { Card, Disclaimer, Spinner } from '../components/ui'
 import { VoiceButton } from '../components/VoiceButton'
-import { useMoney, useMutation, useQuery } from '../lib/hooks'
+import { useCurrency, useMoney, useMutation, useQuery } from '../lib/hooks'
 import { recategorise } from '../lib/recategorise'
 import { useMonthlyReport } from '../lib/report'
 import { useUi } from '../lib/store'
@@ -425,17 +425,20 @@ function UncategorisedNudge({ report }: { report: MonthlyCloseReport }): React.J
 function suggestedPrompts(
   report: MonthlyCloseReport | null,
   portfolio: ReturnType<typeof usePortfolio>,
-  profileGaps: number
+  profileGaps: number,
+  currency: string
 ): string[] {
   const out: string[] = []
-  const fmt = (m: number): string => formatMoney(m, 'INR', { compact: true })
+  const fmt = (m: number): string => formatMoney(m, currency, { compact: true })
   if (report?.hasData) {
     const net = report.current.incomeMinor - report.current.spendingMinor
     if (net < 0)
       out.push(`Why did I overspend ${fmt(-net)} in ${monthLabel(report.month, 'short')}?`)
   }
   if (portfolio.savingsCash > 300_000)
-    out.push(`What should I do with ${fmt(portfolio.savingsCash * 100)} sitting in savings?`)
+    out.push(
+      `What should I do with ${formatMoney(portfolio.savingsCash * 100, 'INR', { compact: true })} sitting in savings?`
+    )
   if (portfolio.hasFunds) out.push('Which of my mutual funds should I keep?')
   if (portfolio.hasStocks) out.push('Is my stock portfolio too concentrated?')
   if (profileGaps > 6) out.push('What do you need to know about me to advise better?')
@@ -445,6 +448,7 @@ function suggestedPrompts(
 
 export function TodayPage(): React.JSX.Element {
   const { data: report, month } = useMonthlyReport()
+  const currency = useCurrency()
   const indmoney = useQuery(() => api.listIndmoneySnapshots())
   const profile = useQuery(() => api.listProfile())
   const portfolio = usePortfolio(indmoney.data)
@@ -466,7 +470,7 @@ export function TodayPage(): React.JSX.Element {
       <header className="flex items-end justify-between gap-4 pt-2">
         <div>
           <p className="text-[13px] text-ink-3">
-            {new Date().toLocaleDateString('en-IN', {
+            {new Date().toLocaleDateString(currencyInfo(currency).locale, {
               weekday: 'long',
               day: 'numeric',
               month: 'long'
@@ -484,7 +488,7 @@ export function TodayPage(): React.JSX.Element {
       </header>
 
       <HomeAiCard />
-      <CfoNote prompts={suggestedPrompts(report, portfolio, gaps)} />
+      <CfoNote prompts={suggestedPrompts(report, portfolio, gaps, currency)} />
       <VitalSigns report={report} portfolio={portfolio} />
       {report?.hasData && <UncategorisedNudge report={report} />}
       {report?.hasData && <NextMoves insights={report.insights} />}

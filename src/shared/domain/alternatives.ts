@@ -141,7 +141,10 @@ export function findAlternatives(
       id: 'alt:cabs-transit',
       kind: 'alternative',
       categoryId: 'transport',
-      title: 'Use metro, bus or bike taxi for short trips',
+      title:
+        currency === 'INR'
+          ? 'Use metro, bus or bike taxi for short trips'
+          : 'Use transit, a bike or a scooter for short trips',
       detail: `You take ~${Math.round(cabs.perMonthCount)} cab rides a month (${fmt(cabs.monthly)}). Swapping one in three short trips is usually about half the price.`,
       monthlyMinor: saving,
       effort: 'medium',
@@ -153,7 +156,11 @@ export function findAlternatives(
           { label: 'Swap one in three trips at ~50% of the fare', text: '÷ 3 × 0.5' },
           { label: 'Estimated saving per month', amountMinor: saving, op: '=' }
         ],
-        ['Assumes transit or a bike taxi costs about half of a cab for short distances.']
+        [
+          currency === 'INR'
+            ? 'Assumes transit or a bike taxi costs about half of a cab for short distances.'
+            : 'Assumes transit, a bike or a scooter costs about half of a ride-hail trip for short distances.'
+        ]
       )
     })
   }

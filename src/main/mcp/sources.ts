@@ -18,6 +18,8 @@ import type { DataSourceGroup, DataSourceInfo } from '../../shared/types'
 import type { Db } from '../db/client'
 import * as s from '../db/schema'
 import { getSecret, hasSecret, setSecret } from '../ai/secrets'
+import { getSettings } from '../repository'
+import { isIndia } from '../../shared/region'
 
 /**
  * Remote MCP servers the AI CFO reads from. Each one signs in with OAuth (browser + PKCE), a
@@ -33,6 +35,8 @@ const TOOLS_TTL_MS = 10 * 60_000
 export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builtin'> & {
   about: string
   group: DataSourceGroup
+  /** Only offered to people in India (unless already connected). */
+  indiaOnly?: boolean
 })[] = [
   {
     id: 'indmoney',
@@ -41,6 +45,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'oauth',
     tokenAuthMethod: 'client_secret_post',
     group: 'money',
+    indiaOnly: true,
     about:
       'Your portfolio: net worth, holdings, SIPs, savings accounts, card dues — plus live prices, analyst ratings, news and fund rankings.'
   },
@@ -52,6 +57,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'session',
     tokenAuthMethod: 'none',
     group: 'broker',
+    indiaOnly: true,
     about: 'Holdings, positions, mutual funds and margins. Kite asks you to log in again each day.'
   },
   {
@@ -61,6 +67,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'oauth',
     tokenAuthMethod: 'client_secret_basic',
     group: 'broker',
+    indiaOnly: true,
     about: 'Stock and mutual fund holdings, positions and P&L.'
   },
   {
@@ -70,6 +77,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'oauth',
     tokenAuthMethod: 'none',
     group: 'broker',
+    indiaOnly: true,
     about: 'Holdings, positions and funds.'
   },
   {
@@ -79,6 +87,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'oauth',
     tokenAuthMethod: 'none',
     group: 'broker',
+    indiaOnly: true,
     about: 'Holdings, positions and orders (read-only). Upstox renews access daily.'
   },
   {
@@ -88,6 +97,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'session',
     tokenAuthMethod: 'none',
     group: 'broker',
+    indiaOnly: true,
     about: 'Holdings, mutual funds, positions, realised and tax P&L.'
   },
   {
@@ -97,6 +107,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'session',
     tokenAuthMethod: 'none',
     group: 'broker',
+    indiaOnly: true,
     about: 'Holdings and positions. Sign-in uses a QR code in the Kotak Neo app.'
   },
   {
@@ -106,6 +117,7 @@ export const BUILTIN_SOURCES: (Omit<SourceRow, 'createdAt' | 'enabled' | 'builti
     auth: 'oauth',
     tokenAuthMethod: 'none',
     group: 'market',
+    indiaOnly: true,
     about:
       'Indian stock research: financials, screeners, analyst forecasts, FII/DII flows, shareholding, earnings-call and market news.'
   },
@@ -460,7 +472,11 @@ export function resultText(result: Awaited<ReturnType<Client['callTool']>>): str
 // ---------- Managing sources ----------
 
 export async function describeSources(db: Db, probe: boolean): Promise<DataSourceInfo[]> {
-  const rows = listSourceRows(db)
+  const india = isIndia(getSettings(db).primaryCurrency)
+  const rows = listSourceRows(db).filter(
+    (row) =>
+      india || !BUILTIN_SOURCES.find((b) => b.id === row.id)?.indiaOnly || isConnected(db, row)
+  )
   return Promise.all(
     rows.map(async (row) => {
       const connected = isConnected(db, row)

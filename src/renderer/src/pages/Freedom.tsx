@@ -26,6 +26,7 @@ import {
   Progress,
   Spinner
 } from '../components/ui'
+import { countryFor, isIndia } from '@shared/region'
 import { useCurrency, useMoney, useMutation, useQuery } from '../lib/hooks'
 import { NoDataState } from '../lib/report'
 import { useUi } from '../lib/store'
@@ -38,7 +39,7 @@ export function duration(months: number | null): string {
   const y = Math.floor(months / 12)
   const m = months % 12
   if (y === 0) return `${m} month${m === 1 ? '' : 's'}`
-  return m ? `${y} yrs ${m} mo` : `${y} years`
+  return m ? `${y} ${y === 1 ? 'yr' : 'yrs'} ${m} mo` : `${y} year${y === 1 ? '' : 's'}`
 }
 
 function Assumptions({ fi }: { fi: FiProjection }): React.JSX.Element {
@@ -136,6 +137,7 @@ function Assumptions({ fi }: { fi: FiProjection }): React.JSX.Element {
 
 export function FreedomPage(): React.JSX.Element {
   const money = useMoney()
+  const country = countryFor(useCurrency())
   const month = useUi((s) => s.month)
   const settings = useUi((s) => s.settings)
   const { go, askAi } = useUi()
@@ -257,7 +259,7 @@ export function FreedomPage(): React.JSX.Element {
           <div className="px-5 pt-5">
             <h3 className="text-[15px] font-semibold tracking-tight">What if you saved more?</h3>
             <p className="mt-0.5 text-[13px] text-ink-2">
-              Every rupee saved shortens the road twice: you invest more and need less.
+              Every {country.unit} saved shortens the road twice: you invest more and need less.
             </p>
           </div>
           <div className="px-5 pt-4">
@@ -273,7 +275,7 @@ export function FreedomPage(): React.JSX.Element {
               type="range"
               min={0}
               max={sliderMax}
-              step={100_000 / 2}
+              step={isIndia(country.currency) ? 50_000 : 5_000}
               value={extra}
               onChange={(e) => setExtra(Number(e.target.value))}
               className="mt-2 w-full accent-white"
