@@ -54,7 +54,7 @@
     "release:mac": "npm run build && APPLE_KEYCHAIN_PROFILE=sanchay-notarize electron-builder --mac"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.131.0",
+    "@anthropic-ai/sdk": "^1.1.0",
     "@modelcontextprotocol/sdk": "^1.32.2",
     "better-sqlite3": "^13.0.3",
     "csv-parse": "^7.0.3",
