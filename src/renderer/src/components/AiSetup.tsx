@@ -12,6 +12,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { AI_PROVIDER_ORDER, preferredOllamaModel, suggestedProvider } from '@shared/aiDefaults'
 import type { AiProviderId, AiProviderInfo, AiStatus } from '@shared/types'
 import { useUi } from '../lib/store'
 import { api, cn } from '../lib/utils'
@@ -55,6 +56,80 @@ export const CLOUD_HELP: Record<string, { url: string; consent: string }> = {
   openai: { url: 'https://platform.openai.com/api-keys', consent: 'OpenAI' }
 }
 
+/** Where to get each provider, in plain steps. Shown above the key field. */
+const GUIDE: Record<string, { steps: string[]; link: string; label: string; note?: string }> = {
+  claude_code: {
+    steps: [
+      'Install Claude Code on this Mac.',
+      'Run `claude auth login` in Terminal and sign in with your Claude account.',
+      'Come back here and press Check again.'
+    ],
+    link: 'https://docs.claude.com/en/docs/claude-code/setup',
+    label: 'Claude Code setup guide',
+    note: 'Uses your Claude Pro or Max plan, so there is no API key to manage.'
+  },
+  gemini: {
+    steps: [
+      'Open Google AI Studio and sign in with your Google account.',
+      'Click Create API key.',
+      'Copy the key and paste it below.'
+    ],
+    link: 'https://aistudio.google.com/apikey',
+    label: 'Open Google AI Studio',
+    note: 'Gemini has a free tier, which is enough for everyday use.'
+  },
+  anthropic: {
+    steps: [
+      'Sign in to the Claude Console.',
+      'Add credits under Billing.',
+      'Go to API keys, create a key and paste it below.'
+    ],
+    link: 'https://console.anthropic.com/settings/keys',
+    label: 'Open the Claude Console',
+    note: 'API usage is billed separately from a Claude Pro or Max plan. With a plan, Claude Code is simpler.'
+  },
+  openai: {
+    steps: [
+      'Sign in to the OpenAI platform.',
+      'Add a payment method under Billing.',
+      'Go to API keys, create a secret key and paste it below.'
+    ],
+    link: 'https://platform.openai.com/api-keys',
+    label: 'Open the OpenAI platform',
+    note: 'API usage is billed separately from ChatGPT Plus.'
+  }
+}
+
+export function Guide({ id }: { id: string }): React.JSX.Element | null {
+  const g = GUIDE[id]
+  if (!g) return null
+  return (
+    <div className="space-y-2 text-[13px]">
+      <p className="font-semibold">How to get it</p>
+      <ol className="list-decimal space-y-1 pl-4 text-ink-2">
+        {g.steps.map((step) => (
+          <li key={step}>
+            {step
+              .split(/(`[^`]+`)/)
+              .map((part, i) =>
+                part.startsWith('`') ? <code key={i}>{part.slice(1, -1)}</code> : part
+              )}
+          </li>
+        ))}
+      </ol>
+      {g.note && <p className="text-[12px] text-ink-3">{g.note}</p>}
+      <a
+        href={g.link}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-1 text-[12px] font-medium text-accent-ink hover:underline"
+      >
+        {g.label} <ExternalLink className="size-3" />
+      </a>
+    </div>
+  )
+}
+
 function installed(info: AiProviderInfo | undefined, model: string): boolean {
   return !!info?.models.some(
     (m) => m === model || m === `${model}:latest` || m.startsWith(`${model}`)
@@ -62,8 +137,8 @@ function installed(info: AiProviderInfo | undefined, model: string): boolean {
 }
 
 /**
- * Lets the user pick where their AI CFO runs. Local options are listed first; cloud options need
- * an API key and explicit consent because a spending summary leaves the Mac.
+ * Lets the user pick where their AI CFO runs, in recommended order with a short guide for each.
+ * Cloud options need explicit consent because a spending summary leaves the Mac.
  */
 export function AiSetup({
   onReady,
@@ -94,13 +169,18 @@ export function AiSetup({
       if (s.provider !== 'none') {
         setChoice(s.provider)
         if (s.model) setModel(s.model)
-      } else if (s.providers.find((p) => p.id === 'claude_code')?.available) {
-        setChoice('claude_code')
-        setModel('sonnet')
       } else {
-        const ollama = s.providers.find((p) => p.id === 'ollama')
-        if (ollama?.available && !installed(ollama, RECOMMENDED_OLLAMA) && ollama.models[0])
-          setModel(RECOMMENDED_OLLAMA)
+        // Nothing chosen yet: suggest the best option in the recommended order.
+        const id = suggestedProvider(s.providers)
+        const p = s.providers.find((x) => x.id === id)
+        setChoice(id)
+        if (id === 'ollama' && p)
+          setModel(
+            installed(p, RECOMMENDED_OLLAMA)
+              ? RECOMMENDED_OLLAMA
+              : (preferredOllamaModel(p.models) ?? RECOMMENDED_OLLAMA)
+          )
+        else if (p) setModel(p.defaultModel)
       }
     })
     return window.cfoEvents.onAi((e) => {
@@ -188,7 +268,7 @@ export function AiSetup({
     )
   }
 
-  const ordered = ['claude_code', 'ollama', 'apple', 'gemini', 'anthropic', 'openai'] as const
+  const ordered = AI_PROVIDER_ORDER
   const canSave =
     choice === 'ollama'
       ? !!info?.available
@@ -234,7 +314,7 @@ export function AiSetup({
                 <span className="flex flex-wrap items-center gap-1.5 text-[13.5px] font-semibold">
                   {p.name}
                   {id === 'claude_code' && p.available && <Badge tone="positive">Signed in</Badge>}
-                  {id === 'ollama' && <Badge tone="positive">Recommended · Google Gemma</Badge>}
+                  {id === 'ollama' && <Badge tone="positive">Most private · Google Gemma</Badge>}
                   {id === 'apple' && <Badge tone="outline">Coming soon</Badge>}
                 </span>
                 <span className="mt-0.5 flex items-center gap-1 text-[12px] text-ink-3">
@@ -358,13 +438,7 @@ export function AiSetup({
 
         {choice === 'claude_code' && info && !info.available && (
           <div className="space-y-2 text-[13px]">
-            <p className="font-semibold">Use Claude Code as your AI CFO</p>
-            <ol className="list-decimal space-y-1 pl-4 text-ink-2">
-              <li>Install Claude Code on this Mac.</li>
-              <li>
-                Run <code>claude auth login</code> in Terminal and sign in.
-              </li>
-            </ol>
+            <Guide id="claude_code" />
             <p className="text-[12px] text-ink-3">{info.reason}</p>
             <div className="flex gap-2 pt-1">
               <a
@@ -386,6 +460,7 @@ export function AiSetup({
           <div className="space-y-3">
             {info.usesApiKey && (
               <>
+                {!info.hasKey && <Guide id={choice} />}
                 <Field
                   label={`${info.name} API key`}
                   hint={
@@ -404,14 +479,6 @@ export function AiSetup({
                     placeholder={info.hasKey ? '•••••••• saved' : 'Paste your key'}
                   />
                 </Field>
-                <a
-                  href={CLOUD_HELP[choice]?.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-[12px] font-medium text-accent-ink hover:underline"
-                >
-                  Get an API key <ExternalLink className="size-3" />
-                </a>
               </>
             )}
             <Field label="Model" htmlFor="ai-model">

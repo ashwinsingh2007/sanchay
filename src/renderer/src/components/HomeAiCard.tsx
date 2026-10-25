@@ -1,28 +1,35 @@
 import { useState } from 'react'
-import { Bot, ExternalLink, Terminal } from 'lucide-react'
-import { CLOUD_HELP } from './AiSetup'
+import { Bot, Cpu, Terminal } from 'lucide-react'
+import { preferredOllamaModel, suggestedProvider } from '@shared/aiDefaults'
+import { CLOUD_HELP, Guide } from './AiSetup'
 import { Button, Card, CardHeader, Field, Input, Segmented } from './ui'
 import { useQuery } from '../lib/hooks'
 import { useUi } from '../lib/store'
 import { api } from '../lib/utils'
 
-type KeyProvider = 'anthropic' | 'openai'
+type KeyProvider = 'gemini' | 'anthropic' | 'openai'
+const KEY_PROVIDERS: readonly string[] = ['gemini', 'anthropic', 'openai']
 
 /**
- * Home-page nudge until the AI CFO is set up: one click when Claude Code is signed in on this Mac,
- * otherwise a Claude or OpenAI API key.
+ * Home-page nudge until the AI CFO is set up, in the recommended order: one click when Claude Code
+ * is signed in on this Mac, one click for Ollama when it has a model, otherwise an API key
+ * (Gemini first, as it has a free tier).
  */
 export function HomeAiCard(): React.JSX.Element | null {
   const status = useQuery(() => api.getAiStatus())
   const toast = useUi((s) => s.toast)
   const setSettings = useUi((s) => s.setSettings)
-  const [provider, setProvider] = useState<KeyProvider>('anthropic')
+  const [picked, setPicked] = useState<KeyProvider | null>(null)
   const [apiKey, setApiKey] = useState('')
   const [consent, setConsent] = useState(false)
   const [busy, setBusy] = useState(false)
 
   if (!status.data || status.data.ready) return null
   const claudeCode = status.data.providers.find((p) => p.id === 'claude_code')
+  const suggested = suggestedProvider(status.data.providers)
+  const ollama = status.data.providers.find((p) => p.id === 'ollama')
+  const provider: KeyProvider =
+    picked ?? (KEY_PROVIDERS.includes(suggested) ? (suggested as KeyProvider) : 'gemini')
   const keyInfo = status.data.providers.find((p) => p.id === provider)
 
   async function use(input: Parameters<typeof api.configureAi>[0]): Promise<void> {
@@ -72,6 +79,31 @@ export function HomeAiCard(): React.JSX.Element | null {
     )
   }
 
+  if (suggested === 'ollama' && ollama) {
+    const model = preferredOllamaModel(ollama.models)
+    return (
+      <Card>
+        <CardHeader
+          title={
+            <span className="flex items-center gap-2">
+              <Cpu className="size-4" aria-hidden /> Use Ollama as your AI CFO
+            </span>
+          }
+          description={`Ollama is running on this Mac with ${model}. Everything stays on your Mac.`}
+        />
+        <div className="flex justify-end p-5 pt-3">
+          <Button
+            variant="primary"
+            loading={busy}
+            onClick={() => void use({ provider: 'ollama', model })}
+          >
+            Use Ollama
+          </Button>
+        </div>
+      </Card>
+    )
+  }
+
   return (
     <Card>
       <CardHeader
@@ -80,16 +112,17 @@ export function HomeAiCard(): React.JSX.Element | null {
             <Bot className="size-4" aria-hidden /> Set up your AI CFO
           </span>
         }
-        description="Claude Code isn't signed in on this Mac. Add a Claude or OpenAI API key instead."
+        description="Claude Code isn't signed in on this Mac. Gemini has a free API key, or run a model privately with Ollama from Settings."
         action={
           <Segmented
             label="AI provider"
             value={provider}
             onChange={(p) => {
-              setProvider(p)
+              setPicked(p)
               setApiKey('')
             }}
             options={[
+              { value: 'gemini', label: 'Gemini' },
               { value: 'anthropic', label: 'Claude' },
               { value: 'openai', label: 'OpenAI' }
             ]}
@@ -97,6 +130,7 @@ export function HomeAiCard(): React.JSX.Element | null {
         }
       />
       <div className="space-y-3 p-5 pt-4">
+        {!keyInfo?.hasKey && <Guide id={provider} />}
         <Field
           label={`${keyInfo?.name ?? ''} API key`}
           hint={
@@ -127,15 +161,7 @@ export function HomeAiCard(): React.JSX.Element | null {
             {CLOUD_HELP[provider]?.consent} when I chat.
           </span>
         </label>
-        <div className="flex items-center justify-between gap-3">
-          <a
-            href={CLOUD_HELP[provider]?.url}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1 text-[12px] font-medium text-accent-ink hover:underline"
-          >
-            Get an API key <ExternalLink className="size-3" />
-          </a>
+        <div className="flex items-center justify-end gap-3">
           <Button
             variant="primary"
             loading={busy}

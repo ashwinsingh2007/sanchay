@@ -8,6 +8,7 @@ import { refreshCommitments } from './analysis'
 import { reapplyCategories } from './repository'
 import { ensureBuiltinSources } from './mcp/sources'
 import { showSplash } from './splash'
+import { autoSelectAi } from './ai/service'
 
 const isDev = !app.isPackaged && !!process.env['ELECTRON_RENDERER_URL']
 
@@ -132,6 +133,8 @@ app.whenReady().then(() => {
   lockDownNetwork()
   ensureBuiltinSources(db)
   registerIpc(db, { dataDirectory, databaseFile })
+  // Detect Claude Code, Ollama and saved keys in the background; also warms the status cache.
+  void autoSelectAi(db).catch((err) => console.error('[startup] AI auto-select failed', err))
   createWindow(revealMain)
 
   app.on('activate', () => {

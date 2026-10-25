@@ -205,8 +205,8 @@ export function Onboarding(): React.JSX.Element {
                 Set up your AI CFO
               </h1>
               <p className="mt-2 text-[15px] text-ink-2">
-                Choose where your AI runs. We recommend Google’s Gemma model running privately on
-                this Mac through Ollama.
+                Choose where your AI runs. Claude Code is the easiest if you have a Claude plan, and
+                Gemini has a free tier. For full privacy, Ollama runs a model on this Mac.
               </p>
               <div className="mt-5">
                 <AiSetup compact onReady={() => setStep(2)} />

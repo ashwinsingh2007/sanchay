@@ -26,6 +26,7 @@ import { investmentSummary } from '../../shared/domain/investments'
 import { salarySummary } from '../../shared/domain/payslip'
 import { formatMoney } from '../../shared/money'
 import { isIndia } from '../../shared/region'
+import { preferredOllamaModel, suggestedProvider, usableNow } from '../../shared/aiDefaults'
 import type { Db } from '../db/client'
 import * as s from '../db/schema'
 import { getSettings, listCategories, listCommitments, updateSettings } from '../repository'
@@ -182,6 +183,24 @@ export async function pullOllamaModel(
   )
   updateSettings(db, { aiProvider: 'ollama', aiModel: model })
   return getAiStatus(db)
+}
+
+/**
+ * At startup, when no AI has been chosen yet, switch on the best one in the recommended order if it
+ * needs no further consent: Ollama with a model installed, or a cloud AI the user already agreed to
+ * send a summary to. Otherwise (e.g. Claude Code signed in, no consent yet) it is only suggested,
+ * and the Today page asks with one click.
+ */
+export async function autoSelectAi(db: Db): Promise<void> {
+  const settings = getSettings(db)
+  if (settings.aiProvider !== 'none') return
+  const status = await getAiStatus(db)
+  const id = suggestedProvider(status.providers)
+  const p = status.providers.find((x) => x.id === id)
+  if (!p || !usableNow(p)) return
+  if (p.kind === 'cloud' && !settings.cloudConsent) return
+  const model = id === 'ollama' ? preferredOllamaModel(p.models) : p.defaultModel
+  updateSettings(db, { aiProvider: id, aiModel: model })
 }
 
 export function buildSystemPrompt(db: Db, opts: { tools?: boolean } = {}): string {
