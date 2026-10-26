@@ -4,8 +4,6 @@ import {
   TrendingUp,
   ChevronLeft,
   ChevronRight,
-  Landmark,
-  ListChecks,
   Lock,
   Monitor,
   Mountain,
@@ -25,7 +23,6 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { addMonths, monthLabel, todayISO, toMonthKey } from '@shared/dates'
 import { Logo } from './components/Logo'
 import { Spinner } from './components/ui'
-import { SidebarAccounts } from './components/SidebarAccounts'
 import { ImportWizard } from './pages/ImportWizard'
 import { AccountsPage } from './pages/Accounts'
 import { AiCfoPage } from './pages/AiCfo'
@@ -51,23 +48,23 @@ import { api, cn } from './lib/utils'
 const NAV: { page: Page; label: string; icon: ReactNode; group?: string }[] = [
   { page: 'home', label: 'Today', icon: <Sun className="size-4" /> },
   { page: 'ai', label: 'Ask Sanchay', icon: <Sparkles className="size-4" /> },
-  { page: 'steps', label: 'Next moves', icon: <ListChecks className="size-4" />, group: 'Plan' },
-  { page: 'savings', label: 'Save more', icon: <PiggyBank className="size-4" /> },
-  { page: 'goals', label: 'Goals', icon: <Target className="size-4" /> },
-  { page: 'freedom', label: 'Freedom', icon: <Mountain className="size-4" /> },
   { page: 'flow', label: 'Transactions', icon: <ArrowDownUp className="size-4" />, group: 'Money' },
   { page: 'categories', label: 'Categories', icon: <PieChart className="size-4" /> },
-  { page: 'accounts', label: 'Accounts', icon: <Landmark className="size-4" /> },
-  {
-    page: 'investments',
-    label: 'Investments',
-    icon: <TrendingUp className="size-4" />,
-    group: 'Wealth'
-  },
+  { page: 'savings', label: 'Save more', icon: <PiggyBank className="size-4" /> },
+  { page: 'investments', label: 'Investments', icon: <TrendingUp className="size-4" /> },
+  { page: 'goals', label: 'Goals', icon: <Target className="size-4" />, group: 'Plan' },
+  { page: 'freedom', label: 'Freedom', icon: <Mountain className="size-4" /> },
   { page: 'profile', label: 'Money profile', icon: <UserRound className="size-4" />, group: 'You' },
   { page: 'sources', label: 'Data sources', icon: <Plug className="size-4" /> },
   { page: 'settings', label: 'Settings', icon: <Settings className="size-4" /> }
 ]
+
+/** Pages left out of the sidebar, and the item that stays lit while one is open. */
+const NAV_PARENT: Partial<Record<Page, Page>> = {
+  steps: 'home',
+  accounts: 'sources',
+  statements: 'sources'
+}
 
 /** Pages whose content follows the selected month. */
 const MONTH_PAGES = new Set<Page>(['home', 'steps', 'savings', 'flow', 'categories'])
@@ -296,6 +293,13 @@ export default function App(): React.JSX.Element {
     settings.aiProvider === 'gemini' ||
     settings.aiProvider === 'anthropic' ||
     settings.aiProvider === 'openai'
+  const privacyNote = [
+    'Statements and payslips stay on this Mac.',
+    isCloudAi && 'Chats send a summary to your AI, with names, IDs and account numbers masked.',
+    connected.length > 0 && `Read-only: ${connected.join(', ')}.`
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <div className="flex h-full">
@@ -333,7 +337,7 @@ export default function App(): React.JSX.Element {
           aria-label="Main"
         >
           {NAV.map((item) => {
-            const active = page === item.page || (item.page === 'sources' && page === 'statements')
+            const active = (NAV_PARENT[page] ?? page) === item.page
             return (
               <div key={item.page}>
                 {item.group &&
@@ -363,33 +367,19 @@ export default function App(): React.JSX.Element {
               </div>
             )
           })}
-          {!collapsed && <SidebarAccounts />}
         </nav>
-        {collapsed ? (
-          <button
-            onClick={() => go('settings')}
-            className="no-drag mx-auto mt-3 shrink-0 rounded-lg p-2 text-ink-3 ring-1 ring-line transition-colors hover:text-ink hover:ring-line-strong"
-            aria-label="Private by design"
-            title="Private by design: statements and payslips stay on this Mac."
-          >
-            <Lock className="size-4" />
-          </button>
-        ) : (
-          <button
-            onClick={() => go('settings')}
-            className="no-drag mt-3 shrink-0 rounded-xl bg-surface p-3 text-left ring-1 ring-line transition-colors hover:ring-line-strong"
-          >
-            <p className="flex items-center gap-1.5 text-xs font-medium text-ink">
-              <Lock className="size-3" aria-hidden /> Private by design
-            </p>
-            <p className="mt-1 text-[11px] leading-snug text-ink-3">
-              Statements and payslips stay on this Mac.
-              {isCloudAi &&
-                ' Chats send a summary to your AI, with names, IDs and account numbers masked.'}
-              {connected.length > 0 && ` Read-only: ${connected.join(', ')}.`}
-            </p>
-          </button>
-        )}
+        <button
+          onClick={() => go('settings')}
+          className={cn(
+            'no-drag mt-3 flex shrink-0 items-center gap-1.5 rounded-lg text-xs text-ink-3 ring-1 ring-line transition-colors hover:text-ink hover:ring-line-strong',
+            collapsed ? 'mx-auto p-2' : 'px-2.5 py-2'
+          )}
+          aria-label="Private by design"
+          title={privacyNote}
+        >
+          <Lock className={collapsed ? 'size-4' : 'size-3'} aria-hidden />
+          {!collapsed && 'Private by design'}
+        </button>
         <ThemeSwitch vertical={collapsed} />
       </aside>
 

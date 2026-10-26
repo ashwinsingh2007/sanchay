@@ -46,46 +46,24 @@ export function DataSourcesPage(): React.JSX.Element {
         <div className="space-y-8">
           <Group
             title="Your money"
-            note={
-              india
-                ? 'Statements, INDmoney and soon your inbox.'
-                : 'Statements and soon your inbox.'
-            }
+            note={india ? 'Statements and INDmoney.' : 'Your bank and card statements.'}
           >
             <StatementsCard />
-            {sources.data
-              .filter((s) => s.group === 'money')
-              .map((s) => (
-                <SourceCard key={s.id} source={s} />
-              ))}
-            <ComingSoonCard
-              title="Gmail"
-              about={`Finds ${india ? 'bank, card and CAS' : 'bank and card'} statements in your inbox, unlocks them and imports them automatically — read-only, and only those emails.`}
-            />
+            <SourceList sources={sources.data.filter((s) => s.group === 'money')} />
           </Group>
           {brokers.length > 0 && (
             <Group
               title="Brokers"
               note="Official connectors. Sanchay can only read — orders, exits and conversions are blocked."
             >
-              {brokers.map((s) => (
-                <SourceCard key={s.id} source={s} />
-              ))}
+              <SourceList sources={brokers} />
             </Group>
           )}
           <Group title="Market research" note="Live prices, fundamentals and news for Sanchay.">
-            {sources.data
-              .filter((s) => s.group === 'market')
-              .map((s) => (
-                <SourceCard key={s.id} source={s} />
-              ))}
+            <SourceList sources={sources.data.filter((s) => s.group === 'market')} />
           </Group>
           <Group title="Your own" note="Any other MCP server.">
-            {sources.data
-              .filter((s) => s.group === 'custom')
-              .map((s) => (
-                <SourceCard key={s.id} source={s} />
-              ))}
+            <SourceList sources={sources.data.filter((s) => s.group === 'custom')} />
             <AddSource />
           </Group>
         </div>
@@ -114,19 +92,58 @@ function Group({
   )
 }
 
-function ComingSoonCard({ title, about }: { title: string; about: string }): React.JSX.Element {
+/**
+ * Connected sources (and ones that need attention or a pasted token) get a full card; the rest
+ * share one card with a row each, so a list of options stays short.
+ */
+function SourceList({ sources }: { sources: DataSourceInfo[] }): React.JSX.Element {
+  const full = (s: DataSourceInfo): boolean =>
+    s.connected || !!s.error || s.auth === 'token' || !s.builtin
+  const rows = sources.filter((s) => !full(s))
   return (
-    <Card className="opacity-75">
-      <CardHeader
-        title={
-          <span className="flex items-center gap-2">
-            {title} <Badge tone="outline">Coming soon</Badge>
-          </span>
-        }
-        description={about}
-      />
-      <div className="pb-5" />
-    </Card>
+    <>
+      {sources.filter(full).map((s) => (
+        <SourceCard key={s.id} source={s} />
+      ))}
+      {rows.length > 0 && (
+        <Card>
+          <ul className="divide-y divide-line">
+            {rows.map((s) => (
+              <SourceRow key={s.id} source={s} />
+            ))}
+          </ul>
+        </Card>
+      )}
+    </>
+  )
+}
+
+function SourceRow({ source: s }: { source: DataSourceInfo }): React.JSX.Element {
+  const mutate = useMutation()
+  const [busy, setBusy] = useState(false)
+  const browser = s.auth === 'oauth' || s.auth === 'session'
+  return (
+    <li className="flex items-center gap-4 px-5 py-3.5">
+      <div className="min-w-0 flex-1">
+        <p className="text-[13.5px] font-medium text-ink">{s.name}</p>
+        <p className="truncate text-[12.5px] text-ink-3" title={s.about ?? s.url}>
+          {s.about ?? s.url}
+        </p>
+      </div>
+      <Button
+        size="sm"
+        loading={busy}
+        icon={<Link2 className="size-3.5" />}
+        onClick={() => {
+          setBusy(true)
+          void mutate(() => api.connectDataSource({ id: s.id }), `${s.name} connected`).finally(
+            () => setBusy(false)
+          )
+        }}
+      >
+        {busy && browser ? 'Finish sign-in in your browser…' : 'Connect'}
+      </Button>
+    </li>
   )
 }
 
@@ -166,9 +183,14 @@ function StatementsCard(): React.JSX.Element {
           Upload statement
         </Button>
         {n > 0 && (
-          <Button size="sm" onClick={() => go('statements')}>
-            Manage statements →
-          </Button>
+          <>
+            <Button size="sm" onClick={() => go('statements')}>
+              Manage statements →
+            </Button>
+            <Button size="sm" onClick={() => go('accounts')}>
+              Accounts &amp; balances →
+            </Button>
+          </>
         )}
       </div>
     </Card>
